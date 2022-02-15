@@ -46,11 +46,11 @@ function ProfileContent() {
   return (
       <>
           <h5 className="card-title">Welcome {name}</h5>
-          {graphData ? 
+          {/* {graphData ? 
               <ProfileData graphData={graphData} />
               :
               <Button variant="secondary" onClick={RequestProfileData}>Request Profile Information</Button>
-          }
+          } */}
       </>
   );
 };
