@@ -6,22 +6,36 @@ import { loginRequest } from "../../azure/authConfig";
 import Button from "react-bootstrap/Button";
 import { ProfileData } from "../azure/ProfileData";
 import { callMsGraph } from "../../azure/graph";
-import { DetectIfStudent, DetectIfUod, RedirectUser } from "../../azure/detectAuth";
+import { DetectIfStudent, DetectIfUod } from "../../azure/detectAuth";
 import React, { useState } from "react";
 
-
-
-export function Home(){
+export function StudentHome(){
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
+
     const name = accounts[0] && accounts[0].name;
-    const isUod = DetectIfUod();
-    
+
+    const isUoD = DetectIfUod();
+    const isStudent = DetectIfStudent();
+    // if(!isUoD){
+    //     return(
+    //         <div className='home-wrapper'>
+    //         <AuthenticatedTemplate>
+    //             <UnauthorizedComponent/>
+    //         </AuthenticatedTemplate>
+    //         <UnauthenticatedTemplate>
+    //             <UnauthorizedComponent/>
+    //         </UnauthenticatedTemplate>
+    //         </div>
+    //     );
+    // }
     return (
         <>
         <div className='home-wrapper'>
         <AuthenticatedTemplate>
-            {isUod ? RedirectUser() : <UnauthorizedComponent/>}
+             
+            <h1>Welcome  student { name } </h1>
+            <SignOutButton/>
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
             <UnauthorizedComponent/>
@@ -30,6 +44,3 @@ export function Home(){
         </>
         );
 }
-
-
-  
