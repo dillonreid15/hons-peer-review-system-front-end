@@ -1,5 +1,5 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useIsAuthenticated, MsalProvider, useMsal } from "@azure/msal-react";
-import { UnauthorizedComponent } from "./UnauthorizedComponent";
+import { AuthorizedComponent,UnauthorizedComponent } from "./UnauthorizedComponent";
 import './Home.css';
 import { SignOutButton } from "../azure/SignOutButton";
 import { loginRequest } from "../../azure/authConfig";
@@ -12,16 +12,16 @@ import React, { useState } from "react";
 
 
 export function Home(){
-    const { instance, accounts } = useMsal();
-    const [graphData, setGraphData] = useState(null);
-    const name = accounts[0] && accounts[0].name;
-    const isUod = DetectIfUod();
+    // const { instance, accounts } = useMsal();
+    // const [graphData, setGraphData] = useState(null);
+    // // const name = accounts[0] && accounts[0].name;
+    // // const isUod = DetectIfUod();
     
     return (
         <>
         <div className='home-wrapper'>
         <AuthenticatedTemplate>
-            {isUod ? RedirectUser() : <UnauthorizedComponent/>}
+            <AuthorizedComponent/>
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
             <UnauthorizedComponent/>

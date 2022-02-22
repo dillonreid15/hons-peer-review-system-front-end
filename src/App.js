@@ -7,10 +7,11 @@ import Button from "react-bootstrap/Button";
 import { ProfileData } from "./components/azure/ProfileData";
 import { callMsGraph } from "./azure/graph";
 import { Home } from "./components/LandingPage/Home"
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { SignInButton } from './components/azure/SignInButton';
 import { StudentHome } from './components/LandingPage/StudentHome';
 import { LecturerHome } from './components/LandingPage/LecturerHome';
+import { PageNotFound } from './components/LandingPage/PageNotFound';
 import uodlogo from './img/logo.png'
 
 
@@ -33,6 +34,7 @@ function Pages(){
                     <Route path="/" element={<Home />} />
                     <Route path="/lecturerhome" element ={<LecturerHome/>} />
                     <Route path="/studenthome" element ={<StudentHome/>} />
+                    <Route path ="*" element ={<PageNotFound/>} />
                 </Routes>
             </div>
             <div className="site-footer">

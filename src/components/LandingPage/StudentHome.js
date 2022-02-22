@@ -10,25 +10,19 @@ import { DetectIfStudent, DetectIfUod } from "../../azure/detectAuth";
 import React, { useState } from "react";
 
 export function StudentHome(){
+    const isAuthenticated = useIsAuthenticated();
+    if(isAuthenticated){
+    const isUoD = DetectIfUod();
+    const isStudent = DetectIfStudent();
+    }
+    else{
+        window.location.replace("/");
+    }
     const { instance, accounts } = useMsal();
     const [graphData, setGraphData] = useState(null);
 
     const name = accounts[0] && accounts[0].name;
 
-    const isUoD = DetectIfUod();
-    const isStudent = DetectIfStudent();
-    // if(!isUoD){
-    //     return(
-    //         <div className='home-wrapper'>
-    //         <AuthenticatedTemplate>
-    //             <UnauthorizedComponent/>
-    //         </AuthenticatedTemplate>
-    //         <UnauthenticatedTemplate>
-    //             <UnauthorizedComponent/>
-    //         </UnauthenticatedTemplate>
-    //         </div>
-    //     );
-    // }
     return (
         <>
         <div className='home-wrapper'>
@@ -37,9 +31,6 @@ export function StudentHome(){
             <h1>Welcome  student { name } </h1>
             <SignOutButton/>
         </AuthenticatedTemplate>
-        <UnauthenticatedTemplate>
-            <UnauthorizedComponent/>
-        </UnauthenticatedTemplate>
         </div>
         </>
         );
