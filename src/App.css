@@ -1,38 +1,62 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
+/*---- Header ----*/
+
+.site-header {
+  overflow: visible;
+  padding: 20px 5%;
+  transition: background-color 0.2s linear;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.uodlogo {
+  float: left;
+  display: inline-block;
+  width: 240px;
+  padding: 10px 10px 10px 10px;
+
+}
+/*---- Body ----*/
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Nunito', sans-serif;
+  
+  /*new*/
+  height: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html {
+  height: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
+.page-container {
+  overflow: auto;
+  min-height: 100%;
+  position: relative; 
+  /*new*/
+  height: 100vh;
+  display: flex; 
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
 }
 
-.App-link {
-  color: #61dafb;
+#root {
+  height:100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.main{
+flex: 1;
 }
+
+
+/*---- Footer ----*/
+.site-footer{
+padding: 20px 5%;
+text-transform: capitalize;
+display: flex;
+left: 0;
+bottom: 0;
+right: 0;
+}
+

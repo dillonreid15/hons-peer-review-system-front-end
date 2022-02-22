@@ -3,17 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { PublicClientApplication } from "@azure/msal-browser";
+import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./azure/authConfig";
+import { BrowserRouter as Router } from "react-router-dom";
+export const msalInstance = new PublicClientApplication(msalConfig);
 
-const msalInstance = new PublicClientApplication(msalConfig);
+msalInstance.enableAccountStorageEvents();
+
+msalInstance.addEventCallback((event) => {
+  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload.account) {
+    const account = event.payload.account;
+    msalInstance.setActiveAccount(account);
+  }
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <MsalProvider instance={msalInstance}>
-      <App />
-    </MsalProvider>
+    <Router>
+      <App pca={msalInstance}/>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
