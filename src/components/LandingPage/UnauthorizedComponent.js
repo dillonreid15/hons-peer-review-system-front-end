@@ -3,7 +3,9 @@ import { SignInButton } from "../azure/SignInButton";
 import { SignOutButton } from "../azure/SignOutButton";
 import Navbar from "react-bootstrap/Navbar";
 import { useIsAuthenticated } from "@azure/msal-react";
-import { DetectIfStudent, DetectIfUod, RedirectUser } from "../../azure/detectAuth";
+import { DetectIfUod, RedirectUser } from "../../azure/detectAuth";
+import { Usercheck } from '../../apiHandling/apiHandler';
+import { useMsal } from '@azure/msal-react';
 
 export function UnauthorizedComponent(){
     const isAuthenticated = useIsAuthenticated();
@@ -24,10 +26,16 @@ export function UnauthorizedComponent(){
 
 export function AuthorizedComponent(){
     const isUoD = DetectIfUod();
+    const { accounts } = useMsal();
+    const name = accounts[0] && accounts[0].name;
+    console.log(name);
     if(isUoD){
         RedirectUser();
-    } 
+        return(<h1>Loading...</h1>)
+    }
+    else{ 
     return(
         <UnauthorizedComponent/>
     )
+    }
 }

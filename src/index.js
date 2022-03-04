@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
-import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./azure/authConfig";
 import { BrowserRouter as Router } from "react-router-dom";
 export const msalInstance = new PublicClientApplication(msalConfig);
@@ -19,11 +18,11 @@ msalInstance.addEventCallback((event) => {
 });
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <App pca={msalInstance}/>
-    </Router>
-  </React.StrictMode>,
+    </Router>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

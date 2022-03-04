@@ -1,10 +1,8 @@
 import { useMsal } from "@azure/msal-react";
-import React, { useState } from "react";
-
+import { Usercheck } from "../apiHandling/apiHandler";
 
 export function DetectIfStudent() {
-    const { instance, accounts } = useMsal();
-    const [graphData, setGraphData] = useState(null);
+    const { accounts } = useMsal();
     const name = accounts[0] && accounts[0].name;
     
     if(name.includes("Student")){
@@ -16,8 +14,7 @@ export function DetectIfStudent() {
 };
     
 export function DetectIfUod(){
-    const { instance, accounts } = useMsal();
-    const [graphData, setGraphData] = useState(null);
+    const { accounts } = useMsal();
     const email = accounts[0] && accounts[0].username;
     
     if(/@dundee.ac.uk\s*$/.test(email)){return true;}
@@ -25,6 +22,7 @@ export function DetectIfUod(){
     };
 
 export function RedirectUser(){
+
     if(DetectIfUod()){
         if(DetectIfStudent()){
             window.location.replace("/studenthome")

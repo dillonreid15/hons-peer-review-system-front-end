@@ -1,13 +1,7 @@
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useIsAuthenticated, MsalProvider, useMsal } from "@azure/msal-react";
+import { AuthenticatedTemplate, UnauthenticatedTemplate} from "@azure/msal-react";
 import { AuthorizedComponent,UnauthorizedComponent } from "./UnauthorizedComponent";
 import './Home.css';
-import { SignOutButton } from "../azure/SignOutButton";
-import { loginRequest } from "../../azure/authConfig";
-import Button from "react-bootstrap/Button";
-import { ProfileData } from "../azure/ProfileData";
-import { callMsGraph } from "../../azure/graph";
-import { DetectIfStudent, DetectIfUod, RedirectUser } from "../../azure/detectAuth";
-import React, { useState } from "react";
+import React from "react";
 
 
 

@@ -1,14 +1,8 @@
 import './App.css';
-import React, { useState } from "react";
-import { PageLayout } from "./PageLayout";
-import { AuthenticatedTemplate, MsalProvider, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
-import { loginRequest } from "./azure/authConfig";
-import Button from "react-bootstrap/Button";
-import { ProfileData } from "./components/azure/ProfileData";
-import { callMsGraph } from "./azure/graph";
+import React from "react";
+import { MsalProvider } from "@azure/msal-react";
 import { Home } from "./components/LandingPage/Home"
-import { Routes, Route, Navigate } from "react-router-dom";
-import { SignInButton } from './components/azure/SignInButton';
+import { Routes, Route } from "react-router-dom";
 import { StudentHome } from './components/LandingPage/StudentHome';
 import { LecturerHome } from './components/LandingPage/LecturerHome';
 import { PageNotFound } from './components/LandingPage/PageNotFound';
