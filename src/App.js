@@ -1,12 +1,14 @@
 import './App.css';
 import React from "react";
 import { MsalProvider } from "@azure/msal-react";
-import { Home } from "./components/LandingPage/Home"
+import { Loading } from "./components/LandingPage/Loading"
 import { Routes, Route } from "react-router-dom";
 import { StudentHome } from './components/LandingPage/StudentHome';
 import { LecturerHome } from './components/LandingPage/LecturerHome';
 import { PageNotFound } from './components/LandingPage/PageNotFound';
 import uodlogo from './img/logo.png'
+import { Login } from './components/LandingPage/UnauthorizedComponent';
+import { RedirectUser } from './azure/detectAuth';
 
 
 function App({pca}) {
@@ -25,10 +27,10 @@ function Pages(){
             </header>
             <div className="main">
                 <Routes>
-                    <Route path="/" element={<Home />} />
                     <Route path="/lecturerhome" element ={<LecturerHome/>} />
                     <Route path="/studenthome" element ={<StudentHome/>} />
-                    <Route path ="*" element ={<PageNotFound/>} />
+                    <Route path="/login" element ={<Login/>} />
+                    <Route path ="*" element ={<RedirectUser/>} />
                 </Routes>
             </div>
             <div className="site-footer">

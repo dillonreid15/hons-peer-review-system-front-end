@@ -7,8 +7,11 @@ import { DetectIfUod, RedirectUser } from "../../azure/detectAuth";
 import { Usercheck } from '../../apiHandling/apiHandler';
 import { useMsal } from '@azure/msal-react';
 
-export function UnauthorizedComponent(){
+export function Login(){
     const isAuthenticated = useIsAuthenticated();
+    if(isAuthenticated){
+        RedirectUser();
+    }
     return(
     <div className="unauthorized-wrapper">
         <Helmet>
@@ -35,7 +38,7 @@ export function AuthorizedComponent(){
     }
     else{ 
     return(
-        <UnauthorizedComponent/>
+        <Login/>
     )
     }
 }

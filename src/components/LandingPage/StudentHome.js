@@ -5,11 +5,13 @@ import { DetectIfStudent } from "../../azure/detectAuth";
 import React from "react";
 
 export function StudentHome(){
-    const isAuthenticated = useIsAuthenticated();
-    const { accounts } = useMsal();
-    const name = accounts[0] && accounts[0].name;
-    const isStudent = DetectIfStudent();
+    var isAuthenticated = useIsAuthenticated();
+    var { accounts } = useMsal();
+    var name = ""; 
+    var isStudent = DetectIfStudent();
     if(isAuthenticated){
+        console.log("yes");
+        name = accounts[0] && accounts[0].name;
         if(!isStudent)
         {
             window.location.replace("/lecturehome");
