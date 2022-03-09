@@ -3,11 +3,10 @@ import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../azure/authConfig";
 import Button from "react-bootstrap/Button";
 
-
 function handleLogin(instance) {
     instance.loginRedirect(loginRequest).catch(e => {
         console.error(e);
-    });
+    }); 
 }
 
 /**

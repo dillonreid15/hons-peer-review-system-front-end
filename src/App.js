@@ -1,13 +1,11 @@
 import './App.css';
 import React from "react";
 import { MsalProvider } from "@azure/msal-react";
-import { Loading } from "./components/LandingPage/Loading"
 import { Routes, Route } from "react-router-dom";
 import { StudentHome } from './components/LandingPage/StudentHome';
 import { LecturerHome } from './components/LandingPage/LecturerHome';
-import { PageNotFound } from './components/LandingPage/PageNotFound';
 import uodlogo from './img/logo.png'
-import { Login } from './components/LandingPage/UnauthorizedComponent';
+import { Login } from './components/LandingPage/LoginHandler';
 import { RedirectUser } from './azure/detectAuth';
 
 
