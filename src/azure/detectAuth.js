@@ -1,42 +1,8 @@
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
-import { Usercheck } from "../apiHandling/apiHandler";
+import { SignOutButton } from "../components/azure/SignOutButton";
 
 export function RedirectUser(){
-    const User = UserData();
-    if(User.isAuthenticated){
-        if(User.IsUoD){
-            if(User.IsStudent){
-                window.location.replace("/studenthome")
-            }
-            else{
-                window.location.replace("/lecturehome")
-            }
-        }
-        else{
-            window.location.replace("/login")
-        }
-    }
-    else{
-        window.location.replace('/login');
-    }
-    return(<h1>Loading...</h1>)
-}
-
-export function RedirectUserLogin(){
-    const User = UserData();
-    if(User.isAuthenticated){
-        if(User.IsUoD()){         
-            if(User.IsStudent){
-                window.location.replace("/studenthome")
-            }
-            else{
-                window.location.replace("/lecturehome")
-            }
-        }
-        else{
-            window.location.replace("/login")
-        }
-    }
+    return(<div><h1>Redirect page</h1><SignOutButton/></div>)
 }
 
 export function UserData(){
@@ -46,8 +12,7 @@ export function UserData(){
     var name="";
     var fullName="";
     var IsUoD = false;
-    var IsStudent=0;
-    var fullName="";
+    var IsStudent=false;
     if(isAuthenticated){
         email = accounts[0] && accounts[0].username;
         name = accounts[0] && accounts[0].name;

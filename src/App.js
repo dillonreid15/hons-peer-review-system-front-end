@@ -6,7 +6,7 @@ import { StudentHome } from './components/LandingPage/StudentHome';
 import { LecturerHome } from './components/LandingPage/LecturerHome';
 import uodlogo from './img/logo.png'
 import { Login } from './components/LandingPage/LoginHandler';
-import { RedirectUser } from './azure/detectAuth';
+import { Redirect } from './components/LandingPage/Redirect';
 
 
 function App({pca}) {
@@ -27,8 +27,9 @@ function Pages(){
                 <Routes>
                     <Route path="/lecturerhome" element ={<LecturerHome/>} />
                     <Route path="/studenthome" element ={<StudentHome/>} />
-                    <Route path="/login" element ={<Login/>} />
-                    <Route path ="*" element ={<RedirectUser/>} />
+                    <Route path="/" element={<Login/>} />
+                    <Route path="/redirect" element={<Redirect/>} /> 
+                    <Route path ="*" element ={<Redirect/>} />
                 </Routes>
             </div>
             <div className="site-footer">

@@ -1,24 +1,41 @@
-import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 import './Home.css';
 import { SignOutButton } from "../azure/SignOutButton";
-import { UserData } from "../../azure/detectAuth";
+import { UserData } from "../../azure/DetectAuth";
 import React from "react";
 import Helmet from 'react-helmet'; 
-import { Usercheck } from "../../apiHandling/apiHandler";
+import { useEffect } from "react";
 
 
 export function LecturerHome(){
     const User = UserData();
-    // const isAuthenticated = useIsAuthenticated();
-    // const { accounts } = useMsal();
-    // const email = accounts[0] && accounts[0].username;
-    // const name = accounts[0] && accounts[0].name;
-    // const isStudent = DetectIfStudent(isAuthenticated);
-    if(User.isAuthenticated){
-        if(User.IsStudent && User.email !== "DJYReid@dundee.ac.uk")
-        {
-            window.location.replace("/studenthome");
+    useEffect(() =>{
+        if(User.isAuthenticated && User.IsUoD){
+            var IsStudent;
+            if(User.isstudent){
+                IsStudent=1;
+            }
+            else{
+                IsStudent=0;
+            }
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/html' },
+                body: JSON.stringify({ Email: String(User.email), IsStudent: Number(IsStudent), FullName: String(User.fullName)})
+            };
+            fetch(('//127.0.0.1:5000/usercheck'), requestOptions)
+            .then((res) => {return res.json()
+            .then((data) => {
+                console.log("User check complete");
+                return true;
+            });
+            });
         }
+}, []);
+    if(User.isAuthenticated && User.IsUoD){
+            if(User.IsStudent && User.email !== "DJYReid@dundee.ac.uk")
+            {
+                window.location.replace("/studenthome");
+            }
         else{
             return (
                 <>
@@ -31,10 +48,9 @@ export function LecturerHome(){
                 </div>
                 </>
                 );
-        }
+            }
     }
     else{
-        window.location.replace("/");
+        window.location.replace("redirect");
     }
-
 }

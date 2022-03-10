@@ -1,20 +1,36 @@
-import { useIsAuthenticated,  useMsal } from "@azure/msal-react";
 import './Home.css';
 import { SignOutButton } from "../azure/SignOutButton";
-import { DetectIfStudent } from "../../azure/detectAuth";
-import React from "react";
+import React, { useEffect } from "react";
 import Helmet from 'react-helmet'; 
-import { Usercheck } from "../../apiHandling/apiHandler";
-import Button from "@restart/ui/esm/Button";
-import { RedirectUser } from "../../azure/detectAuth";
-import { UserData } from "../../azure/detectAuth";
+import { UserData } from "../../azure/DetectAuth";
 
 export function StudentHome(){
     const User = UserData();
-    console.log("here");
-    if(User.isAuthenticated){
-        console.log("yes");
-        Usercheck();
+    useEffect(() =>{
+            if(User.isAuthenticated && User.IsUoD){
+                var IsStudent;
+                if(User.isstudent){
+                    IsStudent=1;
+                }
+                else{
+                    IsStudent=0;
+                }
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/html' },
+                    body: JSON.stringify({ Email: String(User.email), IsStudent: Number(IsStudent), FullName: String(User.fullName)})
+                };
+                fetch(('//127.0.0.1:5000/usercheck'), requestOptions)
+                .then((res) => {return res.json()
+                .then((data) => {
+                    console.log("User check complete");
+                    return true;
+                });
+                });
+            }
+    }, []);
+    if(User.isAuthenticated && User.IsUoD){
+        // Usercheck();
         if(!User.IsStudent)
         {
             window.location.replace("/lecturehome");
@@ -36,7 +52,7 @@ export function StudentHome(){
         }
     }
     else{
-        window.location.replace("/");
+        window.location.replace("/redirect");
     }
     
 }
