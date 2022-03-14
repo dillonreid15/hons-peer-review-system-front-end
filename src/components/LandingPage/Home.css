@@ -1,0 +1,53 @@
+.container{
+    height:100%;
+}
+
+.home-wrapper{
+    height:100%;
+  }
+  
+.unauthorized-wrapper{
+    background-image: url('../../img/garden.png'); /* Images taken from the website of University of Dundee */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    min-height:100%;
+    position: relative; 
+}
+.sign-in-wrapper{
+box-sizing: border-box; 
+padding: 30px;
+background-color: rgba(255, 255, 255, 0.8);
+display: block;
+
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+border-radius: 0.1cm;
+}
+
+.sign-in-button {
+    clear: both;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 10px 20px;
+    
+    border: none;
+    background-color: #4365E2;
+    font-family: 'Comfortaa', cursive;
+    outline: solid 0.1px white;
+    transition: outline 0.1s linear; 
+    transition: background-color 0.1 linear;
+    box-shadow: none;
+    color:white;
+  }
+  
+  .sign-in-button:hover {
+    outline: solid 2px #4365E2;
+    background-color: white;
+    color: #4365E2;
+  }
+
+

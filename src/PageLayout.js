@@ -9,9 +9,9 @@ import { SignOutButton } from "./components/azure/SignOutButton";
  */
 export const PageLayout = (props) => {
     const isAuthenticated = useIsAuthenticated();
-
     return (
         <>
+            <div className='page-layout'>
             <Navbar bg="primary" variant="dark">
                 { isAuthenticated ? <SignOutButton /> : <SignInButton /> }
             </Navbar>
@@ -19,6 +19,7 @@ export const PageLayout = (props) => {
             <br />
             <br />
             {props.children}
+            </div>
         </>
     );
 };
