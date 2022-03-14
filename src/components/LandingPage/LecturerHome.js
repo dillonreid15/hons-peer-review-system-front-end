@@ -4,7 +4,6 @@ import { UserData } from "../../azure/DetectAuth";
 import React from "react";
 import Helmet from 'react-helmet'; 
 import { useEffect } from "react";
-import { LecturerHomeView } from '../Lecturer/MyForms';
 import Button from '@restart/ui/esm/Button';
 
 export function LecturerHome(){
