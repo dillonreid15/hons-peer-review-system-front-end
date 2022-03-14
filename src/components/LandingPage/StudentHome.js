@@ -2,7 +2,7 @@ import './Home.css';
 import { SignOutButton } from "../azure/SignOutButton";
 import React, { useEffect } from "react";
 import Helmet from 'react-helmet'; 
-import { UserData } from "../../azure/detectAuth";
+import { UserData } from "../../azure/DetectAuth";
 
 export function StudentHome(){
     const User = UserData();

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { UserData } from "../../azure/detectAuth";
+import { UserData } from "../../azure/DetectAuth";
 
 export function MyForms(){
     const User = UserData();

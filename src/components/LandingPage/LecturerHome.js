@@ -1,6 +1,6 @@
 import './Home.css';
 import { SignOutButton } from "../azure/SignOutButton";
-import { UserData } from "../../azure/detectAuth";
+import { UserData } from "../../azure/DetectAuth";
 import React from "react";
 import Helmet from 'react-helmet'; 
 import { useEffect } from "react";
