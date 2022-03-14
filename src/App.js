@@ -1,5 +1,5 @@
 import './App.css';
-<<<<<<< Updated upstream
+
 import React from "react";
 import { MsalProvider } from "@azure/msal-react";
 import { Routes, Route } from "react-router-dom";
@@ -12,17 +12,6 @@ import { MyForms } from './components/Lecturer/MyForms';
 
 
 function App({pca}) {
-=======
-import React, { useState } from "react";
-import { PageLayout } from "./PageLayout";
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
-import { loginRequest } from "./azure/authConfig";
-import Button from "react-bootstrap/Button";
-import { callMsGraph } from "./azure/graph";
-
-
-function App() {
->>>>>>> Stashed changes
   return (
     <MsalProvider instance={pca}>
         <Pages />
