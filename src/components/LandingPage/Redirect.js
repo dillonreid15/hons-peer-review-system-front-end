@@ -5,6 +5,9 @@ export function Redirect(){
     useEffect(() =>{
         if(User.isAuthenticated){
             if(User.IsUoD){
+                if(localStorage.getItem('UserCheckComplete') !== 'True'){
+                    localStorage.setItem('UserCheckComplete', 'False')
+                }
                 if(/@dundee.ac.uk\s*$/.test(User.email)){
                     if(User.name.includes("Student")){
                         window.location.replace("/studenthome")

@@ -7,6 +7,7 @@ import { LecturerHome } from './components/LandingPage/LecturerHome';
 import uodlogo from './img/logo.png'
 import { Login } from './components/LandingPage/LoginHandler';
 import { Redirect } from './components/LandingPage/Redirect';
+import { MyForms } from './components/Lecturer/MyForms';
 
 
 function App({pca}) {
@@ -29,6 +30,7 @@ function Pages(){
                     <Route path="/studenthome" element ={<StudentHome/>} />
                     <Route path="/" element={<Login/>} />
                     <Route path="/redirect" element={<Redirect/>} /> 
+                    <Route path="/myforms" element={<MyForms/>} /> 
                     <Route path ="*" element ={<Redirect/>} />
                 </Routes>
             </div>

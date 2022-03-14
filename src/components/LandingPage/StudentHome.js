@@ -24,7 +24,7 @@ export function StudentHome(){
                 .then((res) => {return res.json()
                 .then((data) => {
                     console.log("User check complete");
-                    return true;
+                    localStorage.setItem('UserCheckComplete', 'True');
                 });
                 });
             }

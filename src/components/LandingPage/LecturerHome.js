@@ -4,7 +4,8 @@ import { UserData } from "../../azure/DetectAuth";
 import React from "react";
 import Helmet from 'react-helmet'; 
 import { useEffect } from "react";
-
+import { LecturerHomeView } from '../Lecturer/MyForms';
+import Button from '@restart/ui/esm/Button';
 
 export function LecturerHome(){
     const User = UserData();
@@ -26,9 +27,21 @@ export function LecturerHome(){
             .then((res) => {return res.json()
             .then((data) => {
                 console.log("User check complete");
-                return true;
+                localStorage.setItem('UserCheckComplete', 'True');
             });
             });
+            // const requestOptionsModules = {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'text/html' },
+            //     body: JSON.stringify({ Email: String(User.email)})
+            // };
+            // fetch(('//127.0.0.1:5000/getmymodules'), requestOptionsModules)
+            // .then((res) => {return res.json()
+            // .then((data) => {
+            //     console.log("Module check complete");
+            //     return true;
+            // });
+            // });
         }
 }, []);
     if(User.isAuthenticated && User.IsUoD){
@@ -44,7 +57,10 @@ export function LecturerHome(){
                 <title>Welcome { User.name } </title>
                 </Helmet>
                     <h1>Welcome lecturer { User.name } </h1>
+                    <Button>Create New Form</Button>
+                    <Button onClick={() => window.location.replace('/myforms')}>View Previously Created Forms</Button>
                     <SignOutButton/>
+                    {/* <LecturerHomeView/> */}
                 </div>
                 </>
                 );

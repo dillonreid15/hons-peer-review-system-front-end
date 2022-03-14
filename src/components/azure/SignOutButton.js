@@ -3,6 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import Button from "react-bootstrap/Button";
 
 function handleLogout(instance) { 
+    localStorage.removeItem('UserCheckComplete');
     instance.logoutRedirect().catch(e => {
         console.error(e);
     });
