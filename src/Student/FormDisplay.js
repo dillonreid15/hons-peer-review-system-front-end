@@ -1,4 +1,4 @@
-import { UserData } from "../azure/DetectAuth";
+import { UserData } from "../azure/detectAuth";
 
 export function StudentHomeView(){
     const User = UserData();
