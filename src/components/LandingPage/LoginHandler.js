@@ -4,7 +4,7 @@ import { SignInButton } from "../azure/SignInButton";
 import { SignOutButton } from "../azure/SignOutButton";
 import Navbar from "react-bootstrap/Navbar";
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react";
-import { UserData } from '../../azure/DetectAuth';
+import { UserData } from '../../azure/detectAuth';
 
 
 export function Login(){
