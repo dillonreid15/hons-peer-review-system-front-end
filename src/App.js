@@ -9,6 +9,10 @@ import uodlogo from './img/logo.png'
 import { Login } from './components/LandingPage/LoginHandler';
 import { Redirect } from './components/LandingPage/Redirect';
 import { MyForms } from './components/Lecturer/MyForms';
+import { CreateForm } from './components/Lecturer/CreateForm';
+import { CreatedFormAssignToClass } from './components/Lecturer/CreatedFormAssignToClass';
+import { CreateTeam } from './components/Lecturer/CreateTeam';
+import { CreateAssignment } from './components/Lecturer/CreateAssignment';
 
 
 function App({pca}) {
@@ -32,6 +36,10 @@ function Pages(){
                     <Route path="/" element={<Login/>} />
                     <Route path="/redirect" element={<Redirect/>} /> 
                     <Route path="/myforms" element={<MyForms/>} /> 
+                    <Route path="/createform" element={<CreateForm/>} /> 
+                    <Route path="/assignform" element={<CreatedFormAssignToClass/>} /> 
+                    <Route path="/createteam" element={<CreateTeam/>}/>
+                    <Route path="/createassignment" element={<CreateAssignment/>}/>
                     <Route path ="*" element ={<Redirect/>} />
                 </Routes>
             </div>

@@ -4,7 +4,7 @@ import { UserData } from "../../azure/detectAuth";
 import React from "react";
 import Helmet from 'react-helmet'; 
 import { useEffect } from "react";
-import Button from '@restart/ui/esm/Button';
+import Button from "react-bootstrap/Button";
 
 export function LecturerHome(){
     const User = UserData();
@@ -56,8 +56,10 @@ export function LecturerHome(){
                 <title>Welcome { User.name } </title>
                 </Helmet>
                     <h1>Welcome lecturer { User.name } </h1>
-                    <Button>Create New Form</Button>
-                    <Button onClick={() => window.location.replace('/myforms')}>View Previously Created Forms</Button>
+                    <Button ClassName="btn-createform" onClick={() => window.location.replace('/createform')}>Add Review Form For Assignment</Button>
+                    <Button ClassName="btn-myform" onClick={() => window.location.replace('/myforms')}>View Previously Assigned Forms</Button>
+                    <Button ClassName="btn-addassignment" onClick={() => window.location.replace('/createassignment')}>Add Module Assignment</Button>
+                    <Button ClassName="btn-addassignment" onClick={() => window.location.replace('/createteam')}>Create Teams</Button>
                     <SignOutButton/>
                     {/* <LecturerHomeView/> */}
                 </div>
