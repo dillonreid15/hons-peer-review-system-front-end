@@ -1,13 +1,23 @@
 import './Home.css';
-import { SignOutButton } from "../azure/SignOutButton";
 import { UserData } from "../../azure/detectAuth";
 import React from "react";
 import Helmet from 'react-helmet'; 
 import { useEffect } from "react";
-import Button from "react-bootstrap/Button";
+import Button from "@mui/material/Button";
+import ButtonGroup from '@mui/material/ButtonGroup';
+import { useMsal } from '@azure/msal-react';
+
+/**Logout function that removes UserCheck from localStorage, only required during test */
+function handleLogout(instance) { 
+    localStorage.removeItem('UserCheckComplete');
+    instance.logoutRedirect().catch(e => {
+        console.error(e);
+    });
+}
 
 export function LecturerHome(){
     const User = UserData();
+    const { instance } = useMsal();
     useEffect(() =>{
         if(User.isAuthenticated && User.IsUoD){
             var IsStudent;
@@ -17,6 +27,7 @@ export function LecturerHome(){
             else{
                 IsStudent=0;
             }
+            /*Api call to check if user exists on database, if not, add user to database*/
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/html' },
@@ -29,40 +40,32 @@ export function LecturerHome(){
                 localStorage.setItem('UserCheckComplete', 'True');
             });
             });
-            // const requestOptionsModules = {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'text/html' },
-            //     body: JSON.stringify({ Email: String(User.email)})
-            // };
-            // fetch(('//127.0.0.1:5000/getmymodules'), requestOptionsModules)
-            // .then((res) => {return res.json()
-            // .then((data) => {
-            //     console.log("Module check complete");
-            //     return true;
-            // });
-            // });
         }
+// eslint-disable-next-line
 }, []);
     if(User.isAuthenticated && User.IsUoD){
-            if(User.IsStudent && User.email !== "DJYReid@dundee.ac.uk")
-            {
-                window.location.replace("/studenthome");
-            }
+        if(User.IsStudent && User.email !== "DJYReid@dundee.ac.uk")
+        {
+            window.location.replace("/studenthome");
+        }
         else{
             return (
                 <>
                 <div className='signed-in-home-wrapper'>
-                <Helmet>
-                <title>Welcome { User.name } </title>
-                </Helmet>
-                    <h1>Welcome lecturer { User.name } </h1>
-                    <Button ClassName="btn-createform" onClick={() => window.location.replace('/createform')}>Add Review Form For Assignment</Button>
-                    <Button ClassName="btn-myform" onClick={() => window.location.replace('/myforms')}>View Previously Assigned Forms</Button>
-                    <Button ClassName="btn-addassignment" onClick={() => window.location.replace('/createassignment')}>Add Module Assignment</Button>
-                    <Button ClassName="btn-addassignment" onClick={() => window.location.replace('/createteam')}>Create Teams</Button>
-                    <SignOutButton/>
-                    {/* <LecturerHomeView/> */}
-                </div>
+                    <Helmet>
+                    <title>Welcome { User.name } </title>
+                    </Helmet>
+                        <h2>Welcome { User.name } </h2>
+                        <div className="button-wrapper">
+                            <ButtonGroup 
+                            orientation="vertical"
+                            size="large">
+                                <Button onClick={() => window.location.replace('/createassignment')}>New Assignment</Button>
+                                <Button onClick={() => window.location.replace('/myforms')}>View Previously Assigned Forms</Button>
+                                <Button onClick={() => handleLogout(instance)}>Sign out</Button>
+                            </ButtonGroup>
+                        </div>
+                    </div>
                 </>
                 );
             }

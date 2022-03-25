@@ -29,6 +29,7 @@ export function StudentHome(){
                 });
                 });
             }
+            // eslint-disable-next-line
     }, []);
     if(User.isAuthenticated && User.IsUoD){
         // Usercheck();

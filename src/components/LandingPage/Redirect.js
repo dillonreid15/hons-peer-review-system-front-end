@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { UserData } from "../../azure/detectAuth";
+
+/**Redirects user to correct page based on authentication, authority, role, and whether or not they're registered on the sites database */
 export function Redirect(){
     const User = UserData();
     useEffect(() =>{

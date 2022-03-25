@@ -5,7 +5,7 @@ import { MsalProvider } from "@azure/msal-react";
 import { Routes, Route } from "react-router-dom";
 import { StudentHome } from './components/LandingPage/StudentHome';
 import { LecturerHome } from './components/LandingPage/LecturerHome';
-import uodlogo from './img/logo.png'
+import uodlogo from './img/logo-white.png'
 import { Login } from './components/LandingPage/LoginHandler';
 import { Redirect } from './components/LandingPage/Redirect';
 import { MyForms } from './components/Lecturer/MyForms';
@@ -13,6 +13,7 @@ import { CreateForm } from './components/Lecturer/CreateForm';
 import { CreatedFormAssignToClass } from './components/Lecturer/CreatedFormAssignToClass';
 import { CreateTeam } from './components/Lecturer/CreateTeam';
 import { CreateAssignment } from './components/Lecturer/CreateAssignment';
+import Popup from 'react-popup'
 
 
 function App({pca}) {
@@ -30,6 +31,7 @@ function Pages(){
             <img className="uodlogo" src={uodlogo} alt="Brand Logo"/>
             </header>
             <div className="main">
+                <Popup/>
                 <Routes>
                     <Route path="/lecturerhome" element ={<LecturerHome/>} />
                     <Route path="/studenthome" element ={<StudentHome/>} />

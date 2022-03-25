@@ -37,6 +37,7 @@ export function MyForms(){
         else{
             window.location.replace('/redirect')
         }
+        // eslint-disable-next-line
     }, [])
 
     return(

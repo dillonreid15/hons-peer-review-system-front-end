@@ -2,10 +2,12 @@ import { UserData } from "../../azure/detectAuth";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { ListGroup } from "react-bootstrap";
+import './CreateFormAssignToClass.css'
 
 export function CreatedFormAssignToClass(){
     const [listModules, setListModules] = useState([]);
     const [listModuleAssignments, setSelectedAssignments] = useState([]);
+    const [selectedAssessmentID, setSelectedAssessmentID] = useState("");
     const [mySubmit, setMySubmit] = useState([]);
 
     const User = UserData();
@@ -14,7 +16,7 @@ export function CreatedFormAssignToClass(){
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'text/html' },
-            body: JSON.stringify({ ModuleID : String(value)})
+            body: JSON.stringify({ ModuleID : String(value), Email : String(User.email)})
         };
         fetch(('//127.0.0.1:5000/getassessmentsformodule'), requestOptions)
         .then((res) => {return res.json()
@@ -33,11 +35,26 @@ export function CreatedFormAssignToClass(){
     }
 
     const onSubmit = () => {
-        //do next after make team
-        localStorage.removeItem('')
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/html' },
+            body: JSON.stringify({ AssignedID: String(localStorage.getItem('assignedid')), AssessmentID: String(selectedAssessmentID)})
+        };
+        fetch(('//127.0.0.1:5000/uploadformsolo'), requestOptions)
+        .then((res) => {return res.json()
+        .then((data) => {
+            // localStorage.removeItem('assignedid');
+            // localStorage.removeItem('formname');
+            // localStorage.removeItem('formtype');
+            // localStorage.removeItem('assessmentid');
+            console.log("File Uploaded");     
+            // window.location.replace('/assignform')
+        });
+        });
     }
 
-    const loadSubmit = () => {
+    const loadSubmitCheck = (value) => {
+        setSelectedAssessmentID(value);
         var sub =["sub"];
         setMySubmit(sub);
     }
@@ -78,9 +95,10 @@ export function CreatedFormAssignToClass(){
         else{
             window.location.replace('/redirect')
         }
+        // eslint-disable-next-line
     }, [])
     return(
-        <div>
+        <div className = "assign-form-wrapper">
             <Helmet>
                 <title>form - {localStorage.getItem("formname")} </title>
             </Helmet>
@@ -94,7 +112,7 @@ export function CreatedFormAssignToClass(){
             </ListGroup>
             <ListGroup className="assessmentsformodule">
                 {listModuleAssignments.map(function name(value, index){
-                    return <ListGroup.Item action variant="primary" name={ value } key={ index } onClick={() => loadSubmit()}>
+                    return <ListGroup.Item action variant="primary" name={ value } key={ index } onClick={e => {loadSubmitCheck(value[0][1])}}>
                            {value[1][1]}
                             </ListGroup.Item>
                 })}
