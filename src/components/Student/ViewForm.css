@@ -1,0 +1,105 @@
+.view-form-wrapper{
+    min-height:100%;
+    border-left:15vh solid #c4ebd0;
+    border-right:15vh solid #c4ebd0;
+    display: flex;
+    flex-direction: column;
+}
+
+.student-wrapper{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
+
+.inside-student-wrapper{
+    display:flex;
+    flex-direction: column;
+    padding-right: 5vh;
+    padding-left: 5vh;
+    padding-bottom: 5vh;
+}
+
+.inside-cat-wrapper{
+    border-left: 10px solid #D1E2F2;
+    border-right: 10px solid #D1E2F2;
+    border-top: 10px solid #D1E2F2;
+}
+
+.heading{
+    border-left: 10px solid #D1E2F2;
+    border-right: 10px solid #D1E2F2;
+    border-top: 10px solid #D1E2F2;
+}
+
+.suggested-grades-wrapper{
+    border-left: 10px solid #D1E2F2;
+    border-right: 10px solid #D1E2F2;
+    border-bottom: 10px solid #D1E2F2;
+    border-top: 10px solid #D1E2F2;
+    text-align: center;
+    padding-bottom: 2%;
+}
+
+h2{
+    padding-top: 2%;
+    padding-left: 5%;
+    padding-bottom: 2%;
+    float: left;
+}
+
+.instruction-wrapper{
+    border-left: 10px solid #D1E2F2;
+    border-right: 10px solid #D1E2F2;
+    text-align: center;
+    padding-bottom: 2%;
+}
+
+.instruction{
+    border: thin solid black; 
+	width: 500px;
+	height:250px; 
+	text-align: justify; 
+	background-color: #FFECD2; 
+    
+	margin: 10px 20px auto; 
+	/* top, left, bottom*/ 
+	padding: 10px 20px 30px; 
+	display:inline-block;
+    
+}
+
+.grades{
+    border: thin solid black; 
+	width: 500px;
+	height:250px; 
+	text-align: center; 
+	background-color: #FFECD2; 
+
+	margin: 10px 20px auto; 
+	/* top, left, bottom*/ 
+	padding: 10px 20px 30px; 
+	display:inline-block;
+    
+}
+
+
+.labels-wrapper{
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.headers{
+    display: flex;
+    flex-direction: column;
+}
+
+.headers h4{
+    padding-left: 5%;
+    padding-top: 1%;
+    margin: 0;
+}

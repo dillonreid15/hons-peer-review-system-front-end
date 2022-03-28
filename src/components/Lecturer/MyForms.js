@@ -2,6 +2,35 @@ import { useEffect, useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import { UserData } from "../../azure/detectAuth";
 import { Helmet } from "react-helmet";
+import SecureStorage from "secure-web-storage/secure-storage"
+
+var CryptoJS = require("crypto-js");
+
+// NOTE: Your Secret Key should be user inputed or obtained through a secure authenticated request.
+//       Do NOT ship your Secret Key in your code.
+var SECRET_KEY = 'my secret key';
+
+var secureStorage = new SecureStorage(localStorage, {
+    hash: function hash(key) {
+        key = CryptoJS.SHA256(key, SECRET_KEY);
+
+        return key.toString();
+    },
+    encrypt: function encrypt(data) {
+        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+
+        data = data.toString();
+
+        return data;
+    },
+    decrypt: function decrypt(data) {
+        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+
+        data = data.toString(CryptoJS.enc.Utf8);
+
+        return data;
+    }
+});
 
 export function MyForms(){
     const [listModules, setListModules] = useState([]);
@@ -10,7 +39,7 @@ export function MyForms(){
     
     useEffect(() =>{
         if(User.IsUoD && User.isAuthenticated && (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")){
-            if(localStorage.getItem('UserCheckComplete') === 'True'){
+            if(secureStorage.getItem('UserCheckComplete') === 'True'){
                 const requestOptions = {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/html' },
@@ -25,8 +54,7 @@ export function MyForms(){
                         MyModules.push(ObjectArray);                         
                         });
                     console.log("Modules Received");     
-                    setListModules(MyModules);      
-                    console.log(MyModules)     
+                    setListModules(MyModules);         
                 });
                 });
             }

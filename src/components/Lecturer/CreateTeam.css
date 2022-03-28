@@ -9,4 +9,40 @@
 .datagrid-wrapper-1{
     display: flex;
     flex-direction: row;
+    margin-bottom: 2%;
+    align-items: center;
+}
+
+.datagrid-wrapper-2{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2%;
+    align-items: center;
+}
+
+.header-wrapper Button{
+
+    float: right;
+    margin-right: 2%;
+    margin-top:2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+.btn-wrapper{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2%;
+}
+
+.datagrid-wrapper-1 Button{
+    margin-left: 2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+.datagrid-wrapper-2 Button{
+    margin-left: 2%;
+    color: white;
+    background-color: #4365E2;
 }

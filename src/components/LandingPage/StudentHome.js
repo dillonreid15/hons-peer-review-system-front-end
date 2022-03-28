@@ -1,12 +1,65 @@
 import './Home.css';
 import { SignOutButton } from "../azure/SignOutButton";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Helmet from 'react-helmet'; 
 import { UserData } from "../../azure/detectAuth";
+import { DataGrid } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
+import Button from '@restart/ui/esm/Button';
+import SecureStorage from "secure-web-storage/secure-storage"
 
+var CryptoJS = require("crypto-js");
+
+// NOTE: Your Secret Key should be user inputed or obtained through a secure authenticated request.
+//       Do NOT ship your Secret Key in your code.
+var SECRET_KEY = 'my secret key';
+
+var secureStorage = new SecureStorage(localStorage, {
+    hash: function hash(key) {
+        key = CryptoJS.SHA256(key, SECRET_KEY);
+
+        return key.toString();
+    },
+    encrypt: function encrypt(data) {
+        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+
+        data = data.toString();
+
+        return data;
+    },
+    decrypt: function decrypt(data) {
+        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+
+        data = data.toString(CryptoJS.enc.Utf8);
+
+        return data;
+    }
+});
 
 export function StudentHome(){
     const User = UserData();
+    
+    const [rows, setRows] = useState([])
+    const [rowsComplete, setRowsComplete] = useState([])
+    const [myForms, setMyForms] = useState([])
+
+    const columns: GridColDef = [
+        { field: 'action',
+         headerName: 'View Form',
+          sortable: false,
+        renderCell: (params) => {
+            const onClick = (e) => {
+                e.stopPropagation();
+                secureStorage.setItem('formid', params.row.reviewid)
+                window.location.replace('/viewform');
+            };
+            return <Button onClick={onClick}>Click</Button>;
+          },
+        },
+        { field: 'reviewname', headerName: 'Review Name', width: 300 },
+        { field: 'datedue', headerName: 'Date Due', width: 500}
+    ]
+
     useEffect(() =>{
             if(User.isAuthenticated && User.IsUoD){
                 var IsStudent;
@@ -25,7 +78,37 @@ export function StudentHome(){
                 .then((res) => {return res.json()
                 .then((data) => {
                     console.log("User check complete");
-                    localStorage.setItem('UserCheckComplete', 'True');
+                    secureStorage.setItem('UserCheckComplete', 'True');
+                });
+                });
+                const requestOptionsAssignments = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/html' },
+                    body: JSON.stringify({ Email: String(User.email)})
+                };
+                fetch(('//127.0.0.1:5000/getmyassessmentsstudent'), requestOptionsAssignments)
+                .then((res) => {return res.json()
+                .then((data) => {
+                    var MyAssessments = []
+                    data.forEach((x) => {
+                        var ObjectArray = Object.entries(x);
+                        MyAssessments.push(ObjectArray);
+                    });
+                    setMyForms(MyAssessments);
+                    var myRows = []
+                    var myRowsComplete = []
+                    for(const x of MyAssessments){
+                        const datetimeReview = new Date(x[1][1])
+                        const currentDate = new Date()
+                        if(x[5][1] === 1 && datetimeReview > currentDate){
+                            myRows.push({reviewid: x[2][1], reviewname: x[3][1], datedue: x[1][1]}) 
+                        }
+                        else if(x[5][1] === 0 || datetimeReview < currentDate){
+                            myRowsComplete.push({reviewid: x[2][1], reviewname: x[3][1], datedue: x[1][1]}) 
+                        }
+                    }
+                    setRows(myRows);
+                    setRowsComplete(myRowsComplete);
                 });
                 });
             }
@@ -40,16 +123,34 @@ export function StudentHome(){
         else{
             return (
                 <>
-                <div className='background-image-wrapper'>
-                    <div className='signed-in-home-wrapper'>
-                    <Helmet>
-                    <title>Welcome { User.name } </title>
-                    </Helmet>
-                        <h1>Welcome  student { User.name } </h1>
-                        <SignOutButton/>
+                <div className='signed-in-home-wrapper'>
+                <Helmet>
+                <title>Welcome { User.name } </title>
+                </Helmet>
+                    <h1>Welcome  student { User.name } </h1>
+                    <SignOutButton/>
+                    <div style={{height: 400, width: '50%'}}>
+                        <DataGrid
+                            sx={{float: 0}}
+                            rows={rows}
+                            columns={columns}
+                            getRowId={(row) => row.reviewid}
+                            pageSize={100}
+                            rowsPerPageOptions={[100]}
+                        />
+                    </div>
+                    <div style={{height: 400, width: '50%'}}>
+                        <DataGrid
+                            sx={{float: 0}}
+                            rows={rowsComplete}
+                            columns={columns}
+                            getRowId={(row) => row.reviewid}
+                            pageSize={100}
+                            rowsPerPageOptions={[100]}
+                        />
                     </div>
                 </div>
-                </>
+                </> 
                 );
         }
     }

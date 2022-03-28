@@ -16,33 +16,36 @@
 
 .list-group{
     padding-top:20px;
-    vertical-align: middle;
+    display: inline-flex;
+    flex-wrap: wrap;
 }
 
 .list-group-item{
     margin: 10px 10px;
-    border-radius: 15px;
-    border: 1px solid #464646;
+    border: 1px solid #3B3B3B;
     width: 250px;
     height: 50px; 
-    padding: 5px;
-    background-color: #ddd9d6;
+    margin: 1%;
+    margin-left: 0;
+    color: white;
+    background-color: #4365E2;
 }
 
 .lbl-assignment-name{
     padding-right:5%;
     font-size: 1rem;
+
 }
 
-.lbl-assignment-type{
-    flex-direction: row;
-    flex: 1;
-    display: inline-block;
+.btn-wrapper Button{
+    margin-top: 5%;
+    margin-bottom: 2%;
+    color: white;
+    background-color: #4365E2;
 }
-
-.select-type{
-    display:inline-block;
-    width: 20rem;
-    font-size: 1rem;
-    vertical-align: middle;   
+.submit-wrapper Button{
+    margin-top: 5%;
+    margin-bottom: 2%;
+    color: white;
+    background-color: #4365E2;
 }
