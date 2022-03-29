@@ -1,0 +1,37 @@
+.signed-in-home-wrapper{
+    min-height:100%;
+    border-left:15vh solid #c4ebd0;
+    border-right:15vh solid #c4ebd0;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-wrapper Button{
+
+    float: right;
+    margin-right: 2%;
+    margin-top:2%;
+    color: white;
+    background-color: #4365E2;
+    display: block;
+    padding: 10px 20px;
+    border: none;
+    font-family: 'Comfortaa', cursive;
+    outline: solid 0.1px white;
+    transition: outline 0.1s linear; 
+    transition: background-color 0.1 linear;
+    box-shadow: none;
+    color:white;
+    }
+
+.datagrid-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2%;
+}
+
+.datagrid-styler{
+    margin-bottom: 2%;
+}
+

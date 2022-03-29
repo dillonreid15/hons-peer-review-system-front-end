@@ -34,6 +34,13 @@
     background-color: #4365E2;
 }
 
+.cat Button:hover{
+    outline: solid 2px #3B3B3B;
+    color: #3B3B3B;
+    background-color: #D1E2F2;
+    
+}
+
 .cat{
     display: flex;
     flex-direction: column;

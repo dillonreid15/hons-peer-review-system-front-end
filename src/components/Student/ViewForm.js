@@ -56,35 +56,43 @@ export function ViewForm(){
     }
     
     const setFormDefaults = (numCat, numStudent, myStudents, tempform) =>{
-        var mark = 100 / numStudent;
-        var student = [];
-        var grade = [];
-        for(var y=0; y<numStudent; y++){
-            student.push({Email: myStudents[y]['Email'], SuggestedMark: mark, Comment: ""});
-            grade.push({Student: myStudents[y]['Email'], Grade: 100});
-        }
+        var newForm = [];
         for(let i=0; i<numCat; i++){
-            setForm(form => [...form, {
-                Category: tempform['column-list'][i]['Category'],
-                Weighting: tempform['column-list'][i]['Weighting'],
-                Student: student
-              }])
+            newForm.push({ 
+            Category: tempform['column-list'][i]['Category'], 
+            Weighting: tempform['column-list'][i]['Weighting'],
+            Student: []
+        })
         }
-        setSuggestedGrades(grade);
+        console.log(numStudent,  numCat)
+        for(let i=0; i<newForm.length; i++){
+            for(let y=0; y<numStudent; y++){
+                
+                newForm[i]['Student'].push({Email : myStudents[y]['Email'],
+                SuggestedMark: 100/numStudent,
+                Comment: ""});
+
+            }
+        }
+        setForm(newForm);
     }
 
     const onChangeCatFields = (iCat, valCat, i, val)=>{
         let newFormValues = [...form];
-        console.log(iCat, i, val.target.name, val.target.value);
-        newFormValues[iCat]['Student'][i][val.target.name] = val.target.value
+        
+        newFormValues[iCat]['Student'][i][val.target.name] = val.target.value;
         newFormValues[iCat]['Student'][i]['Email'] = students[i]['Email'];
-        newFormValues[iCat]['Category'] = valCat.Category
-        newFormValues[iCat]['Weighting'] = valCat.Weighting
-        var noOfCategories = 0;
-        for(x of catList){
-            noOfCategories++;
-        }
-        console.log(form);
+        newFormValues[iCat]['Category'] = valCat.Category;
+        newFormValues[iCat]['Weighting'] = valCat.Weighting;
+        console.log([newFormValues]);
+
+        setForm(newFormValues);
+        // console.log(newFormValues[iCat])
+        // var noOfCategories = 0;
+        // for(x of catList){
+        //     noOfCategories++;
+        // }
+        // console.log(form);
         // if(val.target.name === 'SuggestedMark'){
         //     for(var y = 0; y < noOfCategories; y++){
         //         console.log(form[y]['Student'])
@@ -97,12 +105,12 @@ export function ViewForm(){
         //     // }
             
         // }
-        for(var x of suggestedGrades){
-            // console.log(newFormValues[iCat]['Student'][i][val.target.name]);
-            // console.log(val.target.name);
-        }
+        // for(var x of suggestedGrades){
+        //     // console.log(newFormValues[iCat]['Student'][i][val.target.name]);
+        //     // console.log(val.target.name);
+        // }
+        // console.log(newFormValues);
 
-        setForm(newFormValues);
     }
 
     // const returnMax = (cat) =>{
@@ -281,9 +289,7 @@ export function ViewForm(){
                 </div>
             </div>
             <div className='cat-wrapper'>
-                {catList.map((elementCat, indexCat) =>{
-                    return(
-                        <>
+                {catList.map((elementCat, indexCat) =>(
                             <div className='inside-cat-wrapper' key={indexCat}>
                                 <div className='headers'>
                                     <h4>Section: {elementCat.Category} {" "}</h4>
@@ -291,11 +297,9 @@ export function ViewForm(){
                                     <h4>Total Percentage: {}%</h4>
                                 </div>
                                 <div className='student-wrapper'>
-                                {students.map((element, index) => {
-                                    return(
+                                {students.map((element, index) => (
                                         <div className='inside-student-wrapper' key={index}>
                                             <label>{element.FullName}</label>
-                                            <>
                                             <Box width={500}                                            >
                                                 <Slider 
                                                     value={form[indexCat]['Student'][index]['SuggestedMark']}
@@ -318,15 +322,11 @@ export function ViewForm(){
                                                     name="Comment"
                                                 />
                                             </Box>
-                                            </>
                                         </div>
-                                    )
-                                })}
+                                ))}
                                 </div>
-                            </div>
-                        </>     
-                    )
-                })}
+                            </div>   
+                ))}
             </div>
             <div className="suggested-grades-wrapper">
                 <div className='grades'>

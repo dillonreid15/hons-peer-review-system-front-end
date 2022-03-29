@@ -114,13 +114,9 @@ export function LecturerHome(){
                     </Helmet>
                         <h2>Welcome { User.name } </h2>
                         <div className="button-wrapper">
-                            <ButtonGroup 
-                            orientation="vertical"
-                            size="large">
-                                <Button onClick={() => window.location.replace('/createassignment')}>New Assignment</Button>
-                                <Button onClick={() => window.location.replace('/myforms')}>View Previously Assigned Forms</Button>
-                                <Button onClick={() => handleLogout(instance)}>Sign out</Button>
-                            </ButtonGroup>
+                            <Button onClick={() => window.location.replace('/createassignment')}>New Assignment</Button>
+                            <Button onClick={() => window.location.replace('/myforms')}>View Previously Assigned Forms</Button>
+                            <Button onClick={() => handleLogout(instance)}>Sign out</Button>
                         </div>
                     </div>
                 </>

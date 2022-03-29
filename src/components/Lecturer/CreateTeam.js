@@ -201,7 +201,7 @@ export function CreateTeam(){
             </div>
             <div className="form">
                 <div className="datagrid-wrapper-1">
-                    <div style={{height: 400, width: '60%'}}>
+                    <div className="datagrid-styler" style={{height: 400, width: '60%'}}>
                         <DataGrid
                             rows={rows}
                             columns={columns}
@@ -226,7 +226,7 @@ export function CreateTeam(){
                     var rowForRender = rowsLoad(value);
                     return(
                         <div className="datagrid-wrapper-2">
-                            <div style={{height: 400, width: '60%'}}>
+                            <div className="datagrid-styler" style={{height: 400, width: '60%'}}>
                                 <h4>{listOfTeamNames[index]}</h4>
                                 <DataGrid
                                     sx={{float: 0}}

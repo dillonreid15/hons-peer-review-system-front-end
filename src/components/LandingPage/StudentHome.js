@@ -1,4 +1,4 @@
-import './Home.css';
+import './StudentHome.css';
 import { SignOutButton } from "../azure/SignOutButton";
 import React, { useEffect, useState } from "react";
 import Helmet from 'react-helmet'; 
@@ -7,6 +7,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { GridColDef } from '@mui/x-data-grid';
 import Button from '@restart/ui/esm/Button';
 import SecureStorage from "secure-web-storage/secure-storage"
+import { useMsal } from '@azure/msal-react';
 
 var CryptoJS = require("crypto-js");
 
@@ -36,24 +37,33 @@ var secureStorage = new SecureStorage(localStorage, {
     }
 });
 
+function handleLogout(instance) { 
+    secureStorage.removeItem('UserCheckComplete');
+    instance.logoutRedirect().catch(e => {
+        console.error(e);
+    });
+}
+
 export function StudentHome(){
     const User = UserData();
-    
+    const { instance } = useMsal();
     const [rows, setRows] = useState([])
     const [rowsComplete, setRowsComplete] = useState([])
     const [myForms, setMyForms] = useState([])
 
     const columns: GridColDef = [
         { field: 'action',
-         headerName: 'View Form',
+         headerName: '',
           sortable: false,
+          filterable: false,
+          hideable: false,
         renderCell: (params) => {
             const onClick = (e) => {
                 e.stopPropagation();
                 secureStorage.setItem('formid', params.row.reviewid)
                 window.location.replace('/viewform');
             };
-            return <Button onClick={onClick}>Click</Button>;
+            return <Button onClick={onClick}>View Form</Button>;
           },
         },
         { field: 'reviewname', headerName: 'Review Name', width: 300 },
@@ -127,27 +137,32 @@ export function StudentHome(){
                 <Helmet>
                 <title>Welcome { User.name } </title>
                 </Helmet>
-                    <h1>Welcome  student { User.name } </h1>
-                    <SignOutButton/>
-                    <div style={{height: 400, width: '50%'}}>
-                        <DataGrid
-                            sx={{float: 0}}
-                            rows={rows}
-                            columns={columns}
-                            getRowId={(row) => row.reviewid}
-                            pageSize={100}
-                            rowsPerPageOptions={[100]}
-                        />
+                    <div className="header-wrapper">
+                        <h2>Welcome  student { User.name } </h2>
+                        <Button onClick={() => handleLogout(instance)}>Logout</Button>
                     </div>
-                    <div style={{height: 400, width: '50%'}}>
-                        <DataGrid
-                            sx={{float: 0}}
-                            rows={rowsComplete}
-                            columns={columns}
-                            getRowId={(row) => row.reviewid}
-                            pageSize={100}
-                            rowsPerPageOptions={[100]}
-                        />
+                    <div className="form">
+                        <div className="datagrid-wrapper">
+                            <div className="datagrid-styler" style={{height: 400, width: '80%'}}>
+                                <DataGrid
+
+                                    rows={rows}
+                                    columns={columns}
+                                    getRowId={(row) => row.reviewid}
+                                    pageSize={100}
+                                    rowsPerPageOptions={[100]}
+                                />
+                            </div>
+                            <div className="datagrid-styler" style={{height: 400, width: '80%'}}>
+                                <DataGrid
+                                    rows={rowsComplete}
+                                    columns={columns}
+                                    getRowId={(row) => row.reviewid}
+                                    pageSize={100}
+                                    rowsPerPageOptions={[100]}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 </> 

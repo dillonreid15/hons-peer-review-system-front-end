@@ -9,6 +9,7 @@ import Select from "react-select";
 import './CreateAssignment.css';
 import Popup from "react-popup";
 import SecureStorage from "secure-web-storage/secure-storage";
+import { useMsal } from "@azure/msal-react";
 
 var CryptoJS = require("crypto-js");
 
@@ -38,8 +39,18 @@ var secureStorage = new SecureStorage(localStorage, {
     }
 });
 
+function handleLogout(instance) { 
+    secureStorage.removeItem('UserCheckComplete');
+    instance.logoutRedirect().catch(e => {
+        console.error(e);
+    });
+}
+
 
 export function CreateAssignment(){
+
+    const { instance } = useMsal();
+
     //list of modules for signed in user
     const [myModules, setMyModules] = useState([]);
 
@@ -184,6 +195,10 @@ export function CreateAssignment(){
             <Helmet>
                 <title>Create Assignment</title>
             </Helmet>
+            <div className="header-wrapper">
+                <Button className="btn-logout" onClick={() => handleLogout(instance)}>Logout</Button>
+                <Button className="btn-home" onClick={() => window.location.replace('/lecturerhome')}>Home</Button>
+            </div>
             <div className="form">
                 <form onSubmit={e => { onSubmit(e) }}>
                     <label className="lbl-assignment-name">

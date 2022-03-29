@@ -43,9 +43,24 @@
     color: white;
     background-color: #4365E2;
 }
+
+.btn-wrapper Button:hover{
+    outline: solid 2px #3B3B3B;
+    color: #3B3B3B;
+    background-color: #D1E2F2;
+    
+}
+
 .submit-wrapper Button{
     margin-top: 5%;
     margin-bottom: 2%;
     color: white;
     background-color: #4365E2;
+}
+
+.submit-wrapper Button:hover{
+    outline: solid 2px #3B3B3B;
+    color: #3B3B3B;
+    background-color: #D1E2F2;
+    
 }

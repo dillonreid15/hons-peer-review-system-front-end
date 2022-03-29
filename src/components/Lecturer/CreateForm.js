@@ -127,7 +127,7 @@ export function CreateForm(){
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ Form: formString})
                 };
-                if(secureStorage.getItem('assignedid' !== null)){
+                if(secureStorage.getItem('assignedid') === null){
                     fetch(('//127.0.0.1:5000/uploadform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
@@ -135,23 +135,17 @@ export function CreateForm(){
                         secureStorage.setItem("duedate", dtToFormat );
                         secureStorage.setItem("duetime", timeToFormat );
                         console.log("File Uploaded"); 
-                        if(secureStorage.getItem('formtype') === 'solo'){
-                            window.location.replace('/assignform')
-                        }    
-                        else if(secureStorage.getItem('formtype') === 'team'){
-                            window.location.replace('/createteam')
-                        }
-                    });
+                    }); 
                     });
                 }
                 else{
-                    fetch(('//127.0.0.1:5000/uploadform'), requestOptions)
+                    fetch(('//127.0.0.1:5000/updateform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
                         secureStorage.setItem("duedate", dtToFormat );
                         secureStorage.setItem("duetime", timeToFormat );
-                        console.log("File Updated"); 
                         window.location.replace('/createteam')
+                        
                     });
                     });
                 }            
@@ -162,6 +156,7 @@ export function CreateForm(){
     useEffect(() =>{
         if(User.IsUoD && User.isAuthenticated && (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")){
             if(secureStorage.getItem('UserCheckComplete') === 'True'){
+                console.log(secureStorage.getItem('assignedid'));
                 if(secureStorage.getItem('assignedid') !== null){
                     //If form was already created but no teams were assigned, reload the form to make changes
                     const requestOptions = {
@@ -181,6 +176,7 @@ export function CreateForm(){
                         setTime(cTime);
                         const Cat = jsonObj['column-list'];
                         setCatList(Cat);
+                        console.log(Cat);
                     });
                     });            
                 }
