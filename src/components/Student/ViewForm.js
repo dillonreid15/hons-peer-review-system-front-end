@@ -49,6 +49,7 @@ export function ViewForm(){
     const [suggestedGrades, setSuggestedGrades] = useState([])
     const [catWeighting, setCatWeighting] = useState([]);
     const [defaultSlideVal, setDefaultSlideVal] = useState(0);
+    const [numStudents, setNumStudents] = useState(0);
 
     const getVal = (i, val) =>{
         var sliderVal = 0;
@@ -57,14 +58,15 @@ export function ViewForm(){
     
     const setFormDefaults = (numCat, numStudent, myStudents, tempform) =>{
         var newForm = [];
+        var catWeight = [];
         for(let i=0; i<numCat; i++){
             newForm.push({ 
             Category: tempform['column-list'][i]['Category'], 
             Weighting: tempform['column-list'][i]['Weighting'],
             Student: []
-        })
+            })
+            catWeight.push({TotalPercentage: 100 })
         }
-        console.log(numStudent,  numCat)
         for(let i=0; i<newForm.length; i++){
             for(let y=0; y<numStudent; y++){
                 
@@ -74,60 +76,57 @@ export function ViewForm(){
 
             }
         }
+        for(var i=0; i<numStudent; i++){
+            suggestedGrades.push({Email : myStudents[i]['Email'], FullName: myStudents[i]['FullName'], GradeAdjust: 100 })
+        }
+        setNumStudents(numStudent);
+        setCatWeighting(catWeight);
         setForm(newForm);
     }
 
     const onChangeCatFields = (iCat, valCat, i, val)=>{
         let newFormValues = [...form];
-        
+
+        if(val.target.name === 'SuggestedMark'){
+            var diff = Math.abs(newFormValues[iCat]['Student'][i]['SuggestedMark'] - val.target.value);
+            if(newFormValues[iCat]['Student'][i]['SuggestedMark'] < val.target.value){   
+                catWeighting[iCat]['TotalPercentage'] = catWeighting[iCat]['TotalPercentage'] + diff; 
+            }
+            else{
+                catWeighting[iCat]['TotalPercentage'] = catWeighting[iCat]['TotalPercentage'] - diff;
+            }
+            
+        }
+
         newFormValues[iCat]['Student'][i][val.target.name] = val.target.value;
         newFormValues[iCat]['Student'][i]['Email'] = students[i]['Email'];
         newFormValues[iCat]['Category'] = valCat.Category;
         newFormValues[iCat]['Weighting'] = valCat.Weighting;
-        console.log([newFormValues]);
-
+        
+        
+        var suggestedPercentageArr = []
+        for(var z=0; z<newFormValues.length; z++){
+            var suggestedPercentage = ((newFormValues[z]['Weighting'] / 100) *
+             (newFormValues[z]['Student'][i]['SuggestedMark'] * numStudents))
+            suggestedPercentageArr.push(suggestedPercentage);
+        }
+        console.log(suggestedPercentageArr);
+        var total = 0;
+        for(var j=0; j<suggestedPercentageArr.length; j++){
+            total = total + suggestedPercentageArr[j];
+        }
+        console.log(total);
+        var suggestedgradesArr = []
+        for(const x of suggestedGrades){
+            if(x['Email'] === newFormValues[iCat]['Student'][i]['Email']){
+                x['GradeAdjust'] = total;
+            }
+            suggestedgradesArr.push(x);
+        }
+        console.log(suggestedGrades)
+        setSuggestedGrades(suggestedgradesArr);
         setForm(newFormValues);
-        // console.log(newFormValues[iCat])
-        // var noOfCategories = 0;
-        // for(x of catList){
-        //     noOfCategories++;
-        // }
-        // console.log(form);
-        // if(val.target.name === 'SuggestedMark'){
-        //     for(var y = 0; y < noOfCategories; y++){
-        //         console.log(form[y]['Student'])
-        //         // for(const x of form[y]){
-        //         //     console.log("egg")
-        //         // }
-        //     }   
-        //     // for(const x of newFormValues[newFormValues.length()]['Student'][i]['SuggestedMark']){
-                
-        //     // }
-            
-        // }
-        // for(var x of suggestedGrades){
-        //     // console.log(newFormValues[iCat]['Student'][i][val.target.name]);
-        //     // console.log(val.target.name);
-        // }
-        // console.log(newFormValues);
-
     }
-
-    // const returnMax = (cat) =>{
-    //     let formToRead = [...form];
-    //     var catName = cat['Category'];
-    //     var total = 100;
-    //     for(var x of formToRead){
-    //         if(x['Category'] === catName){
-    //             var tempTotal = 0;
-    //             for(var y of x['Student']){
-    //                 tempTotal += y['SuggestedMark'];
-    //             }
-    //             total = tempTotal;
-    //         }
-    //     }
-    //     return total;
-    // }
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -145,7 +144,7 @@ export function ViewForm(){
         }
         if(efforts){
             var formToSend = JSON.stringify(form);
-            console.log(suggestedGrades)
+            
             // const requestOptions = {
             //     method: 'POST',
             //     headers: { 'Content-Type': 'application/json' },
@@ -294,7 +293,7 @@ export function ViewForm(){
                                 <div className='headers'>
                                     <h4>Section: {elementCat.Category} {" "}</h4>
                                     <h4>Weighting: {elementCat.Weighting}%</h4>
-                                    <h4>Total Percentage: {}%</h4>
+                                    <h4>Total Percentage: {catWeighting.length && catWeighting[indexCat]['TotalPercentage']}%</h4>
                                 </div>
                                 <div className='student-wrapper'>
                                 {students.map((element, index) => (
@@ -332,6 +331,14 @@ export function ViewForm(){
                 <div className='grades'>
                     <div className='labels-wrapper'>
                         <h4>Your Suggested % Of The Given Grade For Each Student</h4>
+                        {suggestedGrades.map((element, index) =>{
+                            return(
+                                <div className='grade-name-wrapper'>
+                                    <label>Name: {suggestedGrades[index]['FullName']} </label>
+                                    <label>Suggestion: {suggestedGrades[index]['GradeAdjust']}%</label>
+                                </div>
+                            )
+                        })}
                         <br/>
                         <Button className='btn-submit' onClick={e => handleSubmit(e)}></Button>
                     </div>
