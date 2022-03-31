@@ -1,7 +1,7 @@
 import { UserData } from "../../azure/detectAuth";
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import Button from "react-bootstrap/Button";
+import Button from "@mui/material/Button";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { DateTime } from "luxon";
@@ -10,6 +10,43 @@ import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
 import MuiInput from '@mui/material/Input';
 import Popup from "react-popup";
+import { useMsal } from "@azure/msal-react";
+import SecureStorage from "secure-web-storage/secure-storage"
+
+var CryptoJS = require("crypto-js");
+
+// NOTE: Your Secret Key should be user inputed or obtained through a secure authenticated request.
+//       Do NOT ship your Secret Key in your code.
+var SECRET_KEY = 'my secret key';
+
+var secureStorage = new SecureStorage(localStorage, {
+    hash: function hash(key) {
+        key = CryptoJS.SHA256(key, SECRET_KEY);
+
+        return key.toString();
+    },
+    encrypt: function encrypt(data) {
+        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+
+        data = data.toString();
+
+        return data;
+    },
+    decrypt: function decrypt(data) {
+        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+
+        data = data.toString(CryptoJS.enc.Utf8);
+
+        return data;
+    }
+});
+
+function handleLogout(instance) { 
+    secureStorage.removeItem('UserCheckComplete');
+    instance.logoutRedirect().catch(e => {
+        console.error(e);
+    });
+}
 
 export function CreateForm(){
     /** Datepicker passes a date object by default so can't pass an event
@@ -22,6 +59,8 @@ export function CreateForm(){
     const [catList, setCatList] = useState([{Category: "Whole Assignment", Weighting: 50}])
 
     const User = UserData();
+    const { instance } = useMsal();
+
 
     const handleChangeDate = (date) =>{
         setDate(date)
@@ -36,9 +75,7 @@ export function CreateForm(){
         let newFormValues = [...catList];
         newFormValues[i][e.target.name] = e.target.value;
         setCatList(newFormValues);
-        catList.forEach(x => {
-            console.log(x['Weighting']);
-        })
+    
     }
 
     const handleBlur = (i, e) => {
@@ -60,11 +97,11 @@ export function CreateForm(){
     const handleSubmit = (e) => {
         // this will create json from entries and then send it to the database
         e.preventDefault();
+
         let catListWeighting = [];
         catList.forEach(x => {
             catListWeighting.push(x['Weighting'])
         })
-        console.log(catListWeighting);
         var sum = catListWeighting.reduce((partialSum, a) => partialSum + a, 0);
         if(sum !== 100){
             Popup.alert('Weighting must add up to 100');
@@ -78,12 +115,11 @@ export function CreateForm(){
             var timeToFormat=DateTime.fromJSDate(selectedTime).toFormat('HH:mm');
             var formjson = {
                 "email" : User.email,
-                "name" : localStorage.getItem('formname'),
-                "type" : localStorage.getItem('formtype'),
+                "name" : secureStorage.getItem('formname'),
                 "duedate" : dtToFormat,
                 "duetime" : timeToFormat,
                 "column-list" : catList,
-                "assessmentid" : localStorage.getItem('assessmentid')
+                "assessmentid" : secureStorage.getItem('assessmentid')
                 };
                 var formString = JSON.stringify(formjson)
                 const requestOptions = {
@@ -91,29 +127,59 @@ export function CreateForm(){
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ Form: formString})
                 };
-                fetch(('//127.0.0.1:5000/uploadform'), requestOptions)
-                .then((res) => {return res.json()
-                .then((data) => {
-                    localStorage.setItem("assignedid", data );
-                    localStorage.setItem("duedate", dtToFormat );
-                    localStorage.setItem("duetime", timeToFormat );
-                    console.log("File Uploaded"); 
-                    if(localStorage.getItem('formtype') == 'solo'){
-                        window.location.replace('/assignform')
-                    }    
-                    else if(localStorage.getItem('formtype') == 'team'){
+                if(secureStorage.getItem('assignedid') === null){
+                    fetch(('//127.0.0.1:5000/uploadform'), requestOptions)
+                    .then((res) => {return res.json()
+                    .then((data) => {
+                        secureStorage.setItem("assignedid", data );
+                        secureStorage.setItem("duedate", dtToFormat );
+                        secureStorage.setItem("duetime", timeToFormat );
+                        console.log("File Uploaded"); 
+                    }); 
+                    });
+                }
+                else{
+                    fetch(('//127.0.0.1:5000/updateform'), requestOptions)
+                    .then((res) => {return res.json()
+                    .then((data) => {
+                        secureStorage.setItem("duedate", dtToFormat );
+                        secureStorage.setItem("duetime", timeToFormat );
                         window.location.replace('/createteam')
-                    }
-                });
-                });            
+                        
+                    });
+                    });
+                }            
             }
-            console.log(formjson);
         }   
     }
 
     useEffect(() =>{
         if(User.IsUoD && User.isAuthenticated && (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")){
-            if(localStorage.getItem('UserCheckComplete') === 'True'){
+            if(secureStorage.getItem('UserCheckComplete') === 'True'){
+                console.log(secureStorage.getItem('assignedid'));
+                if(secureStorage.getItem('assignedid') !== null){
+                    //If form was already created but no teams were assigned, reload the form to make changes
+                    const requestOptions = {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/html' },
+                        body: JSON.stringify({ AssignedID : String(secureStorage.getItem('assignedid')) })
+                    };
+                    fetch(('//127.0.0.1:5000/loadunsubmittedform'), requestOptions)
+                    .then((res) => {return res.json()
+                    .then((data) => {
+                        const jsonObj = JSON.parse(data[0]['CreatedFormJSON']);
+                        const time = jsonObj['duetime']; 
+                        const date = jsonObj['duedate'];
+                        const cTime = new Date(Date.prototype.setHours.apply(new Date(), time.split(':')));
+                        const cDate = new Date(Date.prototype.setDate.apply(new Date(), date.split('/')));
+                        setDate(cDate);
+                        setTime(cTime);
+                        const Cat = jsonObj['column-list'];
+                        setCatList(Cat);
+                        console.log(Cat);
+                    });
+                    });            
+                }
             }
             else{
                 window.location.replace('/redirect')
@@ -130,48 +196,36 @@ export function CreateForm(){
             <Helmet>
                 <title>Create Form</title>
             </Helmet>
+            <div className="header-wrapper">
+                <Button className="btn-logout" onClick={() => handleLogout(instance)}>Logout</Button>
+                <Button className="btn-home" onClick={() => window.location.replace('/lecturerhome')}>Home</Button>
+                <Button className="btn-back" onClick={() => window.location.replace('/createassignment')}>Back</Button>
+                <h2>Form Name: {secureStorage.getItem('formname')} </h2>
+            </div>
             <div className="form">
                 <form onSubmit={e => { handleSubmit(e) }}>
-                    <label>
-                        Form Name: {localStorage.getItem('formname')}{" "}
-                        {/* <input 
-                            type="text"
-                            name="formname"
-                            value={allValues.formname}
-                            onChange={e => {handleChange(e)}} 
-                        /> */}
-                    </label>
-                    <label>
-                        Form Type: {localStorage.getItem('formtype')}{" "}
-                        {/* <select
-                            type="text"
-                            name="formtype"
-                            onChange={e=> {handleChange(e)}} 
-                        >
-                        <option value="team">Team Assignment</option>
-                        <option value="solo">Solo Assignment</option>
-                        </select> */}
-                    </label>
-                    <label>
-                        Due Date:
-                        <ReactDatePicker
-                            selected={selectedDate}
-                            dateFormat="dd/MM/yyyy"
-                            onChange={handleChangeDate}
-                        />
-                    </label>
-                    <label>
-                        Time:
-                        <ReactDatePicker
-                            selected={selectedTime}
-                            dateFormat="HH:mm"
-                            onChange={handleChangeTime}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            timeIntervals={15}
-                            timeCaption="Time"
-                        />
-                    </label>
+                    <div className ="non-dynamic-elements-wrapper">
+                        <label>
+                            Due Date:
+                            <ReactDatePicker
+                                selected={selectedDate}
+                                dateFormat="dd/MM/yyyy"
+                                onChange={handleChangeDate}
+                            />
+                        </label>
+                        <label>
+                            Time:
+                            <ReactDatePicker
+                                selected={selectedTime}
+                                dateFormat="HH:mm"
+                                onChange={handleChangeTime}
+                                showTimeSelect
+                                showTimeSelectOnly
+                                timeIntervals={15}
+                                timeCaption="Time"
+                            />
+                        </label>
+                    </div>
                     <label>
                         {catList.map((element, index) =>(
                             <div className="cat" key={index}>
@@ -202,18 +256,20 @@ export function CreateForm(){
                                         }}
                                     />
                                 </Box>
-                                {/* <input type="text" name="Weighting" value={element.Weighting || ""} onChange={e => handleChangeCatFields(index, e)} /> */}
-                                {
-                                    index ?
-                                        <button className="btn-remove" type="button" onClick={() => removeFormFields(index)}>Remove Category</button>
-                                        : null
-                                }
+                                <div className="btn-remove-wrapper">
+                                    {
+                                        index ?
+                                            <Button className="btn-remove" onClick={() => removeFormFields(index)}>Remove Category</Button>
+                                            : null
+                                    }
+                                </div>
                             </div>
                         ))}
                     </label>
-
-                    <Button className="btn-add" type="button" onClick={() => addFormFields()}>Add Category</Button>
-                    <Button className="btn-submit" type="submit">Next</Button>
+                    <div className="submit-wrapper">                
+                        <Button className="btn-add" type="button" onClick={() => addFormFields()}>Add Category</Button>
+                        <Button className="btn-submit" type="submit">Next</Button>
+                    </div>    
                 </form>
             </div>
         </div>

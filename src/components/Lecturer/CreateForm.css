@@ -6,5 +6,55 @@
     flex-direction: column;
 }
 
-.form{
+.header-wrapper Button{
+    float: right;
+    margin-right: 2%;
+    margin-top:2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+
+.submit-wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.submit-wrapper Button{
+    margin-top: 2%;
+    margin-right: 2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+.cat Button{
+    margin-top: 2%;
+    margin-right: 2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+.cat Button:hover{
+    outline: solid 2px #3B3B3B;
+    color: #3B3B3B;
+    background-color: #D1E2F2;
+    
+}
+
+.cat{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    width: 40%;
+    border-bottom: 10px solid #D1E2F2;
+}
+
+.cat input{
+    width: 50vh
+}
+
+.non-dynamic-elements-wrapper input{
+    margin-bottom: 2%;
+    
 }

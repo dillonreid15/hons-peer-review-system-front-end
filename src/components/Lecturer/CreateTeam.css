@@ -9,4 +9,73 @@
 .datagrid-wrapper-1{
     display: flex;
     flex-direction: row;
+    margin-bottom: 2%;
+    align-items: center;
+}
+
+.datagrid-wrapper-2{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2%;
+    align-items: center;
+}
+
+.header-wrapper Button{
+    float: right;
+    margin-right: 2%;
+    margin-top:2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+.header-wrapper Button:hover{
+    outline: solid 2px #3B3B3B;
+    color: #3B3B3B;
+    background-color: #D1E2F2;
+    
+}
+
+.btn-wrapper{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2%;
+}
+
+.datagrid-wrapper-1 Button{
+    margin-left: 2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+.datagrid-wrapper-1 Button:hover{
+    outline: solid 2px #3B3B3B;
+    color: #3B3B3B;
+    background-color: #D1E2F2;
+    
+  }
+
+.datagrid-wrapper-2 Button:hover{
+outline: solid 2px #3B3B3B;
+color: #3B3B3B;
+background-color: #D1E2F2;
+
+}
+
+.datagrid-wrapper-2 Button{
+    margin-left: 2%;
+    color: white;
+    background-color: #4365E2;
+}
+
+.datagrid-styler Button{
+    padding: 1px;
+    margin: 5%;
+    border-radius:0%;
+    background-color: white;
+    color: #3B3B3B;
+}
+
+.datagrid-styler Button:hover{
+    background-color: white;
+    color: #3B3B3B;
 }
