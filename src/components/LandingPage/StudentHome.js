@@ -117,6 +117,7 @@ export function StudentHome(){
                             myRowsComplete.push({reviewid: x[2][1], reviewname: x[3][1], datedue: x[1][1]}) 
                         }
                     }
+                    secureStorage.removeItem('formid');
                     setRows(myRows);
                     setRowsComplete(myRowsComplete);
                 });
@@ -143,6 +144,7 @@ export function StudentHome(){
                     </div>
                     <div className="form">
                         <div className="datagrid-wrapper">
+                            <h2>Due Forms</h2>
                             <div className="datagrid-styler" style={{height: 400, width: '80%'}}>
                                 <DataGrid
 
@@ -153,6 +155,7 @@ export function StudentHome(){
                                     rowsPerPageOptions={[100]}
                                 />
                             </div>
+                            <h2>Previous Forms</h2>
                             <div className="datagrid-styler" style={{height: 400, width: '80%'}}>
                                 <DataGrid
                                     rows={rowsComplete}

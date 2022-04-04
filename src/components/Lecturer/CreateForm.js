@@ -122,7 +122,6 @@ export function CreateForm(){
         }
         if(isValidName){
             if(isValidType){
-                console.log("here");
                 var arrToInt = catListWeighting.map(function(x) {
                     return parseInt(x, 10);
                 });
@@ -301,7 +300,7 @@ export function CreateForm(){
         onChange={e => handleChangeCatFields(index, e)}
       >
         <FormControlLabel value="TeamMarked" control={<Radio />} label="Team Marked" />
-        <FormControlLabel value="LecturerMarkedTeam " control={<Radio />} label="Lecturer Marked - Team" />
+        <FormControlLabel value="LecturerMarkedTeam" control={<Radio />} label="Lecturer Marked - Team" />
         <FormControlLabel value="LecturerMarkedIndividual" control={<Radio />} label="Lecturer Marked - Solo" />
       </RadioGroup>
     </FormControl>
