@@ -214,7 +214,6 @@ export function ViewForm(){
                     reviewdata = data[0];
                     templatedata = data[1];
                     teamsdata = data[2];
-
                     const datetimeReview = new Date(reviewdata[0]['DateDue']);
                     const currentDate = new Date()
 
@@ -261,6 +260,8 @@ export function ViewForm(){
         }
     // eslint-disable-next-line
     }, [])
+
+    
     return(
         <>
         <div className="view-form-wrapper">
@@ -294,6 +295,11 @@ export function ViewForm(){
                                     <h4>Section: {elementCat.Category} {" "}</h4>
                                     <h4>Weighting: {elementCat.Weighting}%</h4>
                                     <h4>Total Percentage: {catWeighting.length && catWeighting[indexCat]['TotalPercentage']}%</h4>
+                                    <TextField
+                                        id="outlined-number"
+                                        label="Suggested Mark"
+                                        type="number"
+                                    />
                                 </div>
                                 <div className='student-wrapper'>
                                 {students.map((element, index) => (
