@@ -33,7 +33,6 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "FAST_REFRESH=false CHOKIDAR_USEPOLLING=true react-scripts start",
     "heroku-postbuild": "react-scripts build",
     "build": "react-scripts build",
     "test": "react-scripts test",
