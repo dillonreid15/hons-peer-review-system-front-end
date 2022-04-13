@@ -12,6 +12,11 @@ import MuiInput from '@mui/material/Input';
 import Popup from "react-popup";
 import { useMsal } from "@azure/msal-react";
 import SecureStorage from "secure-web-storage/secure-storage"
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 var CryptoJS = require("crypto-js");
 
@@ -56,7 +61,7 @@ export function CreateForm(){
     const [selectedTime, setTime] = useState(new Date());
 
     //store dynamically added categories
-    const [catList, setCatList] = useState([{Category: "Whole Assignment", Weighting: 50}])
+    const [catList, setCatList] = useState([{Category: "Whole Assignment", Weighting: 50, CategoryType: "TeamMarked"}])
 
     const User = UserData();
     const { instance } = useMsal();
@@ -74,9 +79,11 @@ export function CreateForm(){
 
         let newFormValues = [...catList];
         newFormValues[i][e.target.name] = e.target.value;
+        console.log(newFormValues)
         setCatList(newFormValues);
     
     }
+
 
     const handleBlur = (i, e) => {
         if (catList[i].Weighting < 0) {
@@ -102,55 +109,83 @@ export function CreateForm(){
         catList.forEach(x => {
             catListWeighting.push(x['Weighting'])
         })
-        var sum = catListWeighting.reduce((partialSum, a) => partialSum + a, 0);
-        if(sum !== 100){
-            Popup.alert('Weighting must add up to 100');
+        var isValidName = true;
+        var isValidType = true;
+        for(const x of catList){
+            
+            if(x['Category'] === '' || (x['Category']).trim().length === 0){
+                isValidName = false;
+            } 
+            if(x['CategoryType'] === ''){
+                isValidType = false;
+            } 
         }
-        else if (sum === 100){
-            if(catList.Category === "" || catList.Weighting === ""){
-                Popup.alert("ALL FIELDS MUST HAVE VALUES")
-            }
-            else{
-            var dtToFormat=DateTime.fromJSDate(selectedDate).toFormat('dd/MM/yyyy');
-            var timeToFormat=DateTime.fromJSDate(selectedTime).toFormat('HH:mm');
-            var formjson = {
-                "email" : User.email,
-                "name" : secureStorage.getItem('formname'),
-                "duedate" : dtToFormat,
-                "duetime" : timeToFormat,
-                "column-list" : catList,
-                "assessmentid" : secureStorage.getItem('assessmentid')
-                };
-                var formString = JSON.stringify(formjson)
-                const requestOptions = {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ Form: formString})
-                };
-                if(secureStorage.getItem('assignedid') === null){
-                    fetch(('//127.0.0.1:5000/uploadform'), requestOptions)
-                    .then((res) => {return res.json()
-                    .then((data) => {
-                        secureStorage.setItem("assignedid", data );
-                        secureStorage.setItem("duedate", dtToFormat );
-                        secureStorage.setItem("duetime", timeToFormat );
-                        console.log("File Uploaded"); 
-                    }); 
-                    });
+        if(isValidName){
+            if(isValidType){
+                var arrToInt = catListWeighting.map(function(x) {
+                    return parseInt(x, 10);
+                });
+                var sum = arrToInt.reduce((partialSum, a) => partialSum + a, 0);
+                if(sum !== 100){
+                    Popup.alert('Weighting must add up to 100');
                 }
-                else{
-                    fetch(('//127.0.0.1:5000/updateform'), requestOptions)
-                    .then((res) => {return res.json()
-                    .then((data) => {
-                        secureStorage.setItem("duedate", dtToFormat );
-                        secureStorage.setItem("duetime", timeToFormat );
-                        window.location.replace('/createteam')
-                        
-                    });
-                    });
-                }            
+                else if (sum === 100){
+                    if(catList.Category === "" || catList.Weighting === ""){
+                        Popup.alert("ALL FIELDS MUST HAVE VALUES")
+                    }
+                    else{
+                    var dtToFormat=DateTime.fromJSDate(selectedDate).toFormat('dd/MM/yyyy');
+                    var timeToFormat=DateTime.fromJSDate(selectedTime).toFormat('HH:mm');
+                    var formjson = {
+                        "email" : User.email,
+                        "name" : secureStorage.getItem('formname'),
+                        "duedate" : dtToFormat,
+                        "duetime" : timeToFormat,
+                        "column-list" : catList,
+                        "assessmentid" : secureStorage.getItem('assessmentid')
+                        };
+                        var formString = JSON.stringify(formjson)
+                        const requestOptions = {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ Form: formString})
+                        };
+                        if(secureStorage.getItem('assignedid') === null){
+                            fetch(('//127.0.0.1:5000/uploadform'), requestOptions)
+                            .then((res) => {return res.json()
+                            .then((data) => {
+                                secureStorage.setItem("assignedid", data );
+                                secureStorage.setItem("duedate", dtToFormat );
+                                secureStorage.setItem("duetime", timeToFormat );
+                                console.log("File Uploaded"); 
+                                window.location.replace('/createteam');
+                            }); 
+                            });
+                        }
+                        else{
+                            fetch(('//127.0.0.1:5000/updateform'), requestOptions)
+                            .then((res) => {return res.json()
+                            .then((data) => {
+                                secureStorage.setItem("duedate", dtToFormat );
+                                secureStorage.setItem("duetime", timeToFormat );
+                                window.location.replace('/createteam')
+                                
+                            });
+                            });
+                        }            
+                    }
+                }  
             }
-        }   
+            else
+            {
+                Popup.alert("Please select a category type")
+            }
+        }
+        else
+        {
+            Popup.alert("Please enter a name for all categories")
+        } 
+        
     }
 
     useEffect(() =>{
@@ -226,13 +261,16 @@ export function CreateForm(){
                             />
                         </label>
                     </div>
-                    <label>
+                    <div className="cat-wrapper">
                         {catList.map((element, index) =>(
-                            <div className="cat" key={index}>
-                                <label>Category: </label>
-                                <input type="text" name="Category" value={element.Category || ""} onChange={e => handleChangeCatFields(index, e)} />
-                                <label>Weighting: </label>
+                            <div className="inside-cat-wrapper" key={index}>
                                 <Box width={300}>
+                                <label>Category: </label>
+                                <br/>
+                                <input type="text" name="Category" value={element.Category || ""} onChange={e => handleChangeCatFields(index, e)} />
+                                <br/>
+                                <label>Weighting: </label>
+                                <br/>
                                     <Slider 
                                         defaultValue={50}
                                         value={catList[index].Weighting}
@@ -248,7 +286,7 @@ export function CreateForm(){
                                         onChange={e => handleChangeCatFields(index, e)}
                                         onBlur={e => handleBlur(index, e)}
                                         inputProps={{
-                                        step: 5,
+                                        step: 1,
                                         min: 0,
                                         max: 100,
                                         type: 'number',
@@ -256,6 +294,20 @@ export function CreateForm(){
                                         }}
                                     />
                                 </Box>
+                                <FormControl>
+                                    <FormLabel id="demo-row-radio-buttons-group-label">Category Type</FormLabel>
+                                    <RadioGroup
+                                        row
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="CategoryType"
+                                        defaultValue="TeamMarked"
+                                        onChange={e => handleChangeCatFields(index, e)}
+                                    >
+                                        <FormControlLabel  value="TeamMarked" control={<Radio />} label="Team Marked" />
+                                        <FormControlLabel value="LecturerMarkedTeam" control={<Radio />} label="Lecturer Marked - Team" />
+                                        <FormControlLabel value="LecturerMarkedIndividual" control={<Radio />} label="Lecturer Marked - Solo" />
+                                    </RadioGroup>
+                                </FormControl>
                                 <div className="btn-remove-wrapper">
                                     {
                                         index ?
@@ -263,9 +315,9 @@ export function CreateForm(){
                                             : null
                                     }
                                 </div>
-                            </div>
+                            </div> 
                         ))}
-                    </label>
+                    </div>
                     <div className="submit-wrapper">                
                         <Button className="btn-add" type="button" onClick={() => addFormFields()}>Add Category</Button>
                         <Button className="btn-submit" type="submit">Next</Button>

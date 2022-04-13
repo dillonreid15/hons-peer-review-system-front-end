@@ -1,0 +1,129 @@
+.view-form-wrapper{
+    min-height:100%;
+    border-left:15vh solid #c4ebd0;
+    border-right:15vh solid #c4ebd0;
+    display: flex;
+    flex-direction: column;
+}
+
+.apply-grade{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.grade-styler Button{
+    float: right;
+    margin-left: 5%;
+    color: white;
+    background-color: #4365E2;
+    padding: 5px 5px;
+    border: none;
+    font-family: 'Comfortaa', cursive;
+    outline: solid 0.1px white;
+    transition: outline 0.1s linear; 
+    transition: background-color 0.1 linear;
+    box-shadow: none;
+    color:white;
+    align-items: center;
+}
+h2{
+    text-align: left;
+}
+
+.grade-styler{
+    display: flex;
+    align-items: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.grade-styler h4{
+padding-left: 5%;
+}
+
+.datagrid-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 2%;
+}
+
+.headers h4{
+    padding-left: 5%;
+    padding-top: 1%;
+    margin: 0;
+}
+.apply-grade h4{
+    padding-top: 0;
+    padding-right: 1%;
+
+}
+
+.indiv-wrapper h4{
+    padding-left: 2%;
+}
+
+.apply-grade h3{
+    text-align: left;
+
+}
+
+.apply-grade{
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.heading{
+    border: 0;
+}
+
+.lec-assessed-team{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mark-input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto; 
+    margin-right: 25%;
+}
+
+.indiv-wrapper{
+    border-left: 10px solid #D1E2F2;
+    border-right: 10px solid #D1E2F2;
+    border-top: 10px solid #D1E2F2;
+    border-bottom: 10px solid #D1E2F2;
+    margin-bottom: 1%;
+}
+
+.lec-assessed-team{
+    border-top: 2px solid black;
+}
+
+.lec-assessed-solo{
+    border-left: 10px solid #D1E2F2;
+    border-right: 10px solid #D1E2F2;
+    border-top: 10px solid #D1E2F2;
+    border-bottom: 10px solid #D1E2F2;
+    margin-bottom: 1%;
+
+}.grade-styler{
+    border-left: 10px solid #D1E2F2;
+    border-right: 10px solid #D1E2F2;
+    border-top: 10px solid #D1E2F2;
+    border-bottom: 10px solid #D1E2F2;
+}
+
+
+
+.lec-assessed-solo h4{
+    padding-left: 2%;
+
+
+}

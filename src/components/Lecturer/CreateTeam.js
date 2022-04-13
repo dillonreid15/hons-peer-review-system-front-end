@@ -239,6 +239,7 @@ export function CreateTeam(){
                                     checkboxSelection
                                     onSelectionModelChange={(ids) =>{
                                         const selectedIDs = new Set(ids);
+                                        // eslint-disable-next-line
                                         const selectedRowData = rows.filter((row) =>
                                         selectedIDs.has(row.email)
                                         );
