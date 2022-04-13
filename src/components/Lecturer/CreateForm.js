@@ -61,7 +61,7 @@ export function CreateForm(){
     const [selectedTime, setTime] = useState(new Date());
 
     //store dynamically added categories
-    const [catList, setCatList] = useState([{Category: "Whole Assignment", Weighting: 50, CategoryType: ""}])
+    const [catList, setCatList] = useState([{Category: "Whole Assignment", Weighting: 50, CategoryType: "TeamMarked"}])
 
     const User = UserData();
     const { instance } = useMsal();
@@ -261,13 +261,16 @@ export function CreateForm(){
                             />
                         </label>
                     </div>
-                    <label>
+                    <div className="cat-wrapper">
                         {catList.map((element, index) =>(
-                            <div className="cat" key={index}>
-                                <label>Category: </label>
-                                <input type="text" name="Category" value={element.Category || ""} onChange={e => handleChangeCatFields(index, e)} />
-                                <label>Weighting: </label>
+                            <div className="inside-cat-wrapper" key={index}>
                                 <Box width={300}>
+                                <label>Category: </label>
+                                <br/>
+                                <input type="text" name="Category" value={element.Category || ""} onChange={e => handleChangeCatFields(index, e)} />
+                                <br/>
+                                <label>Weighting: </label>
+                                <br/>
                                     <Slider 
                                         defaultValue={50}
                                         value={catList[index].Weighting}
@@ -292,18 +295,19 @@ export function CreateForm(){
                                     />
                                 </Box>
                                 <FormControl>
-      <FormLabel id="demo-row-radio-buttons-group-label">Category Type</FormLabel>
-      <RadioGroup
-        row
-        aria-labelledby="demo-row-radio-buttons-group-label"
-        name="CategoryType"
-        onChange={e => handleChangeCatFields(index, e)}
-      >
-        <FormControlLabel value="TeamMarked" control={<Radio />} label="Team Marked" />
-        <FormControlLabel value="LecturerMarkedTeam" control={<Radio />} label="Lecturer Marked - Team" />
-        <FormControlLabel value="LecturerMarkedIndividual" control={<Radio />} label="Lecturer Marked - Solo" />
-      </RadioGroup>
-    </FormControl>
+                                    <FormLabel id="demo-row-radio-buttons-group-label">Category Type</FormLabel>
+                                    <RadioGroup
+                                        row
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="CategoryType"
+                                        defaultValue="TeamMarked"
+                                        onChange={e => handleChangeCatFields(index, e)}
+                                    >
+                                        <FormControlLabel  value="TeamMarked" control={<Radio />} label="Team Marked" />
+                                        <FormControlLabel value="LecturerMarkedTeam" control={<Radio />} label="Lecturer Marked - Team" />
+                                        <FormControlLabel value="LecturerMarkedIndividual" control={<Radio />} label="Lecturer Marked - Solo" />
+                                    </RadioGroup>
+                                </FormControl>
                                 <div className="btn-remove-wrapper">
                                     {
                                         index ?
@@ -311,9 +315,9 @@ export function CreateForm(){
                                             : null
                                     }
                                 </div>
-                            </div>
+                            </div> 
                         ))}
-                    </label>
+                    </div>
                     <div className="submit-wrapper">                
                         <Button className="btn-add" type="button" onClick={() => addFormFields()}>Add Category</Button>
                         <Button className="btn-submit" type="submit">Next</Button>

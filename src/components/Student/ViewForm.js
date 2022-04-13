@@ -1,8 +1,7 @@
-import { elementTypeAcceptingRef } from "@mui/utils";
 import React, { useEffect, useState } from "react";
 import Helmet from 'react-helmet';
 import { UserData } from "../../azure/detectAuth";
-import { Slider, SliderValueLabel } from "@mui/material";
+import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
 import TextField from '@mui/material/TextField';
 import Button from "react-bootstrap/Button";
@@ -51,10 +50,8 @@ export function ViewForm(){
     const { instance } = useMsal();
 
     const [review, setReview] = useState([]);
-    const [template, setTemplate] = useState([]);
     const [students, setStudents] = useState([]);
     const [catList, setCatList] = useState([]);
-    const [visible, setVisibility] = useState(0);
     const [form, setForm] = useState([]);
     const [suggestedGrades, setSuggestedGrades] = useState([])
     const [catWeighting, setCatWeighting] = useState([]);
@@ -62,11 +59,6 @@ export function ViewForm(){
     const [numStudents, setNumStudents] = useState(0);
     const [additionalCatWeights, setAdditionalCatWeights] = useState(0);
     const [suggestedMark, setSuggestedMark] = useState([]);
-
-    const getVal = (i, val) =>{
-        var sliderVal = 0;
-        return sliderVal;
-    }
     
     const setFormDefaults = (numCat, numStudent, myStudents, tempform) =>{
         var newForm = [];
@@ -268,22 +260,23 @@ export function ViewForm(){
                         var catlist = []
                         var noOfCat=0;
                         var additionalCat = 0;
-                        for(const x of formtemp['column-list']){
-                            if(x['CategoryType'] === "TeamMarked"){
-                                catlist.push(x)
-                                noOfCat++;
-                            }    
-                            else{
-                                additionalCat = additionalCat + x['Weighting']
-                            }
-                        }
+                            for(const x of formtemp['column-list']){
+                                if(x['CategoryType'] === "TeamMarked"){
+                                    catlist.push(x)
+                                    noOfCat++;
+                                }    
+                                else{
+                                    additionalCat = additionalCat + x['Weighting']
+                                }
+                            }        
+                        console.log(reviewdata)
                         setAdditionalCatWeights(additionalCat);
                         setCatList(catlist);
                         var noOfStudent=0;
-                        for(const x of teamsdata){
+                        for(var i = 0; i<teamsdata.length; i++){
                             noOfStudent++
                         }
-                        if(reviewdata[0]['SubmittedFormJSON'] === null){
+                        if(reviewdata[0]['SubmittedFormJSON'] === null || reviewdata[0]['SubmittedFormJSON'].length === 0){
                             const noToRound = (100 / noOfStudent)
                             var noToPas = Math.round(noToRound * 10) / 10;
                             setDefaultSlideVal(noToPas);
@@ -294,7 +287,6 @@ export function ViewForm(){
                         }
 
                         setReview(reviewdata);
-                        setTemplate(templatedata);
                         setStudents(teamsdata);
                     });
                     });    
@@ -426,6 +418,8 @@ export function ViewForm(){
                         <title>assessmentname</title>
                     </Helmet>
                     <div className='heading'>
+                        <Button className="btn-logout" onClick={() => handleLogout(instance)}>Logout</Button>
+                        <Button className="btn-home" onClick={() => window.location.replace('/studenthome')}>Home</Button>
                         {review.map((e, i)=>{return <h2>Assessment: {e.ReviewName}</h2>})}
                     </div>
                     <div className='instruction-wrapper'>

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { UserData } from "../../azure/detectAuth";
 import { Helmet } from "react-helmet";
 import SecureStorage from "secure-web-storage/secure-storage"
-import Button from "@mui/material/Button";
+import Button from '@restart/ui/esm/Button';
 import { DataGrid } from '@mui/x-data-grid';
-import './MyForms.css'
 import { useMsal } from "@azure/msal-react";
+import './MyForms.css'
 
 var CryptoJS = require("crypto-js");
 
@@ -42,7 +42,7 @@ function handleLogout(instance) {
     });
 }
 
-export function MyForms(){
+export function MyAssignedForms(){
     const { instance } = useMsal();
     const User = UserData();
     const [rows, setRows] = useState([])
@@ -59,8 +59,8 @@ export function MyForms(){
         renderCell: (params) => {
             const onClick = (e) => {
                 e.stopPropagation();
-                secureStorage.setItem('assignedid', params.row.assignedid)
-                secureStorage.setItem('formpage', 'myforms')
+                secureStorage.setItem('formid', params.row.reviewid)
+                secureStorage.setItem('formpage', 'myassignedforms')
                 window.location.replace('/viewformlec');
             };
             return <Button onClick={onClick}>View Form</Button>;
@@ -78,44 +78,32 @@ export function MyForms(){
                     headers: { 'Content-Type': 'text/html' },
                     body: JSON.stringify({ Email: String(User.email)})
                 };
-                fetch(('//127.0.0.1:5000/loadlecturerhomeforms'), requestOptions)
+                fetch(('//127.0.0.1:5000/loadlecturerassignedform'), requestOptions)
                 .then((res) => {return res.json()
                 .then((data) => {
                     var MyAssessments = []
                     data.forEach((x) => {
                         var ObjectArray = Object.entries(x);
                         MyAssessments.push(ObjectArray);
-                        //console.log(x);
-                    });
-                    const uniqueIds = [];
-                    // eslint-disable-next-line
-                    const unique = MyAssessments.filter(x => {
-                        const isDup = uniqueIds.includes(x[0][1]);
-                        if(!isDup){
-                            uniqueIds.push(x[0][1]);
-                            return true;
-                        }
-                    });
-                    //console.log(MyAssessments);
-                   // console.log(unique);
+                        console.log(x);
+                    }); 
                     var myRows = []
                     var myRowsDue = []
                     var myRowsCompleted = []
-
-                    for(const x of unique){
+                    for(const x of MyAssessments){
                         const datetimeReview = new Date(x[1][1])
                         const currentDate = new Date()
                         if(x[5][1] === 0){
-                            myRowsCompleted.push({assignedid: x[0][1], reviewname: x[3][1], datedue: x[1][1]})
+                            myRowsCompleted.push({reviewid: x[2][1], reviewname: x[3][1], datedue: x[1][1]})
                         }
                         else if(datetimeReview < currentDate){
-                            myRowsDue.push({assignedid: x[0][1], reviewname: x[3][1], datedue: x[1][1]})
+                            myRowsDue.push({reviewid: x[2][1], reviewname: x[3][1], datedue: x[1][1]})
                         }
                         else{
-                            myRows.push({assignedid: x[0][1], reviewname: x[3][1], datedue: x[1][1]})
+                            myRows.push({reviewid: x[2][1], reviewname: x[3][1], datedue: x[1][1]})
                         }
                     }
-                    secureStorage.removeItem('assignedid');
+                    secureStorage.removeItem('formid');
                     setRows(myRows);
                     setRowsComplete(myRowsCompleted);
                     setRowsDue(myRowsDue);
@@ -135,7 +123,7 @@ export function MyForms(){
     return(
         <div className='lecturer-forms-wrapper'>
             <Helmet>
-                <title>My Forms</title>
+                <title>Assigned Forms</title>
             </Helmet>
             <div className="header-wrapper">
                 <Button className="btn-logout" onClick={() => handleLogout(instance)}>Logout</Button>
@@ -149,7 +137,7 @@ export function MyForms(){
                         <DataGrid
                             rows={rows}
                             columns={columns}
-                            getRowId={(row) => row.assignedid}
+                            getRowId={(row) => row.reviewid}
                             pageSize={100}
                             rowsPerPageOptions={[100]}
                         />
@@ -159,7 +147,7 @@ export function MyForms(){
                         <DataGrid
                             rows={rowsDue}
                             columns={columns}
-                            getRowId={(row) => row.assignedid}
+                            getRowId={(row) => row.reviewid}
                             pageSize={100}
                             rowsPerPageOptions={[100]}
                         />
@@ -169,7 +157,7 @@ export function MyForms(){
                         <DataGrid
                             rows={rowsComplete}
                             columns={columns}
-                            getRowId={(row) => row.assignedid}
+                            getRowId={(row) => row.reviewid}
                             pageSize={100}
                             rowsPerPageOptions={[100]}
                         />

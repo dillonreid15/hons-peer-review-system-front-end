@@ -27,27 +27,35 @@
     background-color: #4365E2;
 }
 
-.cat Button{
+.inside-cat-wrapper Button{
     margin-top: 2%;
     margin-right: 2%;
     color: white;
     background-color: #4365E2;
 }
 
-.cat Button:hover{
+.inside-cat-wrapper Button:hover{
     outline: solid 2px #3B3B3B;
     color: #3B3B3B;
     background-color: #D1E2F2;
     
 }
 
-.cat{
+.inside-cat-wrapper{
     display: flex;
     flex-direction: column;
-    padding-bottom: 1%;
-    padding-top: 1%;
-    width: 40%;
+    margin-bottom: 1%;
+    padding-left: 2%;
+    padding-bottom: 2%;
+    padding-top: 2%;
     border-bottom: 10px solid #D1E2F2;
+    margin-right: 1%
+}
+
+.cat-wrapper{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .cat input{

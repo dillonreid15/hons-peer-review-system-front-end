@@ -4,9 +4,7 @@ import React from "react";
 import Helmet from 'react-helmet'; 
 import { useEffect } from "react";
 import Button from "@mui/material/Button";
-import ButtonGroup from '@mui/material/ButtonGroup';
 import { useMsal } from '@azure/msal-react';
-import { Secure } from '../../App';
 import SecureStorage from "secure-web-storage/secure-storage"
 
 var CryptoJS = require("crypto-js");
@@ -90,11 +88,13 @@ export function LecturerHome(){
                 if(secureStorage.getItem('assessmentid') !== null){
                     secureStorage.removeItem('assessmentid')
                     secureStorage.removeItem('formname')
+                    secureStorage.removeItem('formid');
                 }
                 if(secureStorage.getItem('assignedid') !== null){
                     secureStorage.removeItem('assignedid')
                     secureStorage.removeItem('duedate')
                     secureStorage.removeItem('duetime')
+                    secureStorage.removeItem('formid');
                 }
             }
         }
@@ -115,7 +115,8 @@ export function LecturerHome(){
                         <h2>Welcome { User.name } </h2>
                         <div className="button-wrapper">
                             <Button onClick={() => window.location.replace('/createassignment')}>New Assignment</Button>
-                            <Button onClick={() => window.location.replace('/myforms')}>View Previously Assigned Forms</Button>
+                            <Button onClick={() => window.location.replace('/myforms')}>View My Created Forms</Button>
+                            <Button onClick={() => window.location.replace('/myassignedforms')}>View My Assigned Forms</Button>
                             <Button onClick={() => handleLogout(instance)}>Sign out</Button>
                         </div>
                     </div>

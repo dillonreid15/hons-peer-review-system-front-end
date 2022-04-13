@@ -10,13 +10,12 @@ import Popup from "react-popup";
 
 export function Login(){
     const User = UserData();
-
+    //Popup.alert("This site uses localStorage, please ensure cookies are enabled");
     useEffect(() => {
         //If user is signed in, redirect
         if(User.isAuthenticated && User.IsUoD){
             window.location.replace('/redirect')
         }
-        Popup.alert("This site uses localStorage, please ensure cookies are enabled");
         // eslint-disable-next-line
     });
     

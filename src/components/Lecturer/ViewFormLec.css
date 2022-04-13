@@ -1,0 +1,16 @@
+.view-form-wrapper{
+    min-height:100%;
+    border-left:15vh solid #c4ebd0;
+    border-right:15vh solid #c4ebd0;
+    display: flex;
+    flex-direction: column;
+}
+
+.datagrid-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2%;
+}
+
+

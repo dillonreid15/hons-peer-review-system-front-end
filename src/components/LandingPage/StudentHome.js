@@ -1,5 +1,4 @@
 import './StudentHome.css';
-import { SignOutButton } from "../azure/SignOutButton";
 import React, { useEffect, useState } from "react";
 import Helmet from 'react-helmet'; 
 import { UserData } from "../../azure/detectAuth";
@@ -49,7 +48,6 @@ export function StudentHome(){
     const { instance } = useMsal();
     const [rows, setRows] = useState([])
     const [rowsComplete, setRowsComplete] = useState([])
-    const [myForms, setMyForms] = useState([])
 
     const columns: GridColDef = [
         { field: 'action',
@@ -104,7 +102,6 @@ export function StudentHome(){
                         var ObjectArray = Object.entries(x);
                         MyAssessments.push(ObjectArray);
                     });
-                    setMyForms(MyAssessments);
                     var myRows = []
                     var myRowsComplete = []
                     for(const x of MyAssessments){
@@ -139,7 +136,7 @@ export function StudentHome(){
                 <title>Welcome { User.name } </title>
                 </Helmet>
                     <div className="header-wrapper">
-                        <h2>Welcome  student { User.name } </h2>
+                        <h2>Welcome { User.name }</h2>
                         <Button onClick={() => handleLogout(instance)}>Logout</Button>
                     </div>
                     <div className="form">

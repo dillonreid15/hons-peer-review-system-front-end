@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import { useEffect } from "react";
 import { ListGroup } from "react-bootstrap";
 import { DataGrid } from "@mui/x-data-grid";
-import Select from "react-select";
 import './CreateAssignment.css';
 import Popup from "react-popup";
 import SecureStorage from "secure-web-storage/secure-storage";

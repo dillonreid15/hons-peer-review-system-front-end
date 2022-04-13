@@ -12,37 +12,12 @@ import { MyForms } from './components/Lecturer/MyForms';
 import { CreateForm } from './components/Lecturer/CreateForm';
 import { CreateTeam } from './components/Lecturer/CreateTeam';
 import { CreateAssignment } from './components/Lecturer/CreateAssignment';
+import { MyAssignedForms } from './components/Lecturer/MyAssignedForms';
 import Popup from 'react-popup'
 import { ViewForm } from './components/Student/ViewForm';
-import SecureStorage from "secure-web-storage/secure-storage"
-
-var CryptoJS = require("crypto-js");
-
-// NOTE: Your Secret Key should be user inputed or obtained through a secure authenticated request.
-//       Do NOT ship your Secret Key in your code.
-var SECRET_KEY = 'my secret key';
-
-var secureStorage = new SecureStorage(localStorage, {
-    hash: function hash(key) {
-        key = CryptoJS.SHA256(key, SECRET_KEY);
-
-        return key.toString();
-    },
-    encrypt: function encrypt(data) {
-        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-
-        data = data.toString();
-
-        return data;
-    },
-    decrypt: function decrypt(data) {
-        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-
-        data = data.toString(CryptoJS.enc.Utf8);
-
-        return data;
-    }
-});
+import { ViewFormLec } from './components/Lecturer/ViewFormLec';
+import { ViewTeam } from './components/Lecturer/ViewTeam';
+import { ViewStudent } from './components/Lecturer/ViewStudent';
 
 function App({pca}) {
   return (
@@ -66,10 +41,14 @@ function Pages(){
                     <Route path="/" element={<Login/>} />
                     <Route path="/redirect" element={<Redirect/>} /> 
                     <Route path="/myforms" element={<MyForms/>} /> 
+                    <Route path="/myassignedforms" element={<MyAssignedForms/>} /> 
                     <Route path="/createform" element={<CreateForm/>} /> 
                     <Route path="/createteam" element={<CreateTeam/>}/>
                     <Route path="/createassignment" element={<CreateAssignment/>}/>
                     <Route path="/viewform" element={<ViewForm/>}/>
+                    <Route path="/viewformlec" element={<ViewFormLec/>}/>
+                    <Route path="/viewteam" element={<ViewTeam/>}/>
+                    <Route path="/viewstudent" element={<ViewStudent/>}/>
                     <Route path ="*" element ={<Redirect/>} />
                 </Routes>
             </div>
