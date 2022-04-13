@@ -62,7 +62,7 @@ export function LecturerHome(){
                 headers: { 'Content-Type': 'text/html' },
                 body: JSON.stringify({ Email: String(User.email), IsStudent: Number(IsStudent), FullName: String(User.fullName)})
             };
-            fetch(('//127.0.0.1:5000/usercheck'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/usercheck'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                 console.log("User check complete");
@@ -78,7 +78,7 @@ export function LecturerHome(){
                     headers: { 'Content-Type': 'text/html' },
                     body: JSON.stringify({ AssessmentID : secureStorage.getItem('assessmentid')})
                 };
-                fetch(('//127.0.0.1:5000/deleteunfinished'), requestOptionsForm)
+                fetch(('https://hons-peer-review-api.herokuapp.com/deleteunfinished'), requestOptionsForm)
                 .then((res) => {return res.json()
                 .then((data) => {
                     console.log("Deleted Unused Content");

@@ -82,7 +82,7 @@ export function StudentHome(){
                     headers: { 'Content-Type': 'text/html' },
                     body: JSON.stringify({ Email: String(User.email), IsStudent: Number(IsStudent), FullName: String(User.fullName)})
                 };
-                fetch(('//127.0.0.1:5000/usercheck'), requestOptions)
+                fetch(('https://hons-peer-review-api.herokuapp.com/usercheck'), requestOptions)
                 .then((res) => {return res.json()
                 .then((data) => {
                     console.log("User check complete");
@@ -94,7 +94,7 @@ export function StudentHome(){
                     headers: { 'Content-Type': 'text/html' },
                     body: JSON.stringify({ Email: String(User.email)})
                 };
-                fetch(('//127.0.0.1:5000/getmyassessmentsstudent'), requestOptionsAssignments)
+                fetch(('https://hons-peer-review-api.herokuapp.com/getmyassessmentsstudent'), requestOptionsAssignments)
                 .then((res) => {return res.json()
                 .then((data) => {
                     var MyAssessments = []
