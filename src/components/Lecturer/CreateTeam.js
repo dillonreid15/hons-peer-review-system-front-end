@@ -141,7 +141,7 @@ export function CreateTeam(){
             headers: { 'Content-Type':  'application/json' },
             body: JSON.stringify({ Form: formString })
         };
-        fetch(('//127.0.0.1:5000/uploadformteam'), requestOptions)
+        fetch(('https://hons-peer-review-api.herokuapp.com/uploadformteam'), requestOptions)
         .then((res) => {return res.json()
         .then((data) => {
             secureStorage.removeItem('assignedid');
@@ -163,7 +163,7 @@ export function CreateTeam(){
                     headers: { 'Content-Type': 'text/html' },
                     body: JSON.stringify({ AssessmentID : String(secureStorage.getItem('assessmentid'))})
                 };
-                fetch(('//127.0.0.1:5000/loadstudentsforassignment'), requestOptions)
+                fetch(('https://hons-peer-review-api.herokuapp.com/loadstudentsforassignment'), requestOptions)
                 .then((res) => {return res.json()
                 .then((data) => {
                     var MyUsers = []

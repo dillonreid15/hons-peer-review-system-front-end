@@ -200,7 +200,7 @@ export function ViewForm(){
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ FormCat: formToSendWithName, ReviewID: review[0]['ReviewID']})
             };
-            fetch(('//127.0.0.1:5000/studentupdateform'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/studentupdateform'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                secureStorage.removeItem('formid');
@@ -250,7 +250,7 @@ export function ViewForm(){
                     var reviewdata = [];
                     var templatedata = [];
                     var teamsdata = [];
-                    fetch(('//127.0.0.1:5000/loadform'), requestOptions)
+                    fetch(('https://hons-peer-review-api.herokuapp.com/loadform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
                         reviewdata = data[0];

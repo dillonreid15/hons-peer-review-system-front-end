@@ -151,7 +151,7 @@ export function CreateForm(){
                             body: JSON.stringify({ Form: formString})
                         };
                         if(secureStorage.getItem('assignedid') === null){
-                            fetch(('//127.0.0.1:5000/uploadform'), requestOptions)
+                            fetch(('https://hons-peer-review-api.herokuapp.com/uploadform'), requestOptions)
                             .then((res) => {return res.json()
                             .then((data) => {
                                 secureStorage.setItem("assignedid", data );
@@ -163,7 +163,7 @@ export function CreateForm(){
                             });
                         }
                         else{
-                            fetch(('//127.0.0.1:5000/updateform'), requestOptions)
+                            fetch(('https://hons-peer-review-api.herokuapp.com/updateform'), requestOptions)
                             .then((res) => {return res.json()
                             .then((data) => {
                                 secureStorage.setItem("duedate", dtToFormat );
@@ -199,7 +199,7 @@ export function CreateForm(){
                         headers: { 'Content-Type': 'text/html' },
                         body: JSON.stringify({ AssignedID : String(secureStorage.getItem('assignedid')) })
                     };
-                    fetch(('//127.0.0.1:5000/loadunsubmittedform'), requestOptions)
+                    fetch(('https://hons-peer-review-api.herokuapp.com/loadunsubmittedform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
                         const jsonObj = JSON.parse(data[0]['CreatedFormJSON']);

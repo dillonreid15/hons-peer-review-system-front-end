@@ -69,7 +69,7 @@ export function ViewStudent(){
                                 headers: { 'Content-Type': 'text/html' },
                                 body: JSON.stringify({ TeamID: secureStorage.getItem('teamid'), Email: secureStorage.getItem('email')})
                             };
-                            fetch(('//127.0.0.1:5000/getstudentforassignment'), requestOptions)
+                            fetch(('https://hons-peer-review-api.herokuapp.com/getstudentforassignment'), requestOptions)
                             .then((res) => {return res.json()
                             .then((data) => {
                                 console.log(data);

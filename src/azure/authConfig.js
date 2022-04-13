@@ -5,7 +5,7 @@ export const msalConfig = {
         clientId: "cf73ac9a-b612-43d8-9a4f-191991ae3dc9",
         authority: "https://login.microsoftonline.com/organizations/",
         //application url
-        redirectUri: "http://localhost:3000/login/.auth/login/aad/callback",
+        redirectUri: "https://hons-peer-review-front-end.herokuapp.com/login/.auth/login/aad/callback",
     },
     cache: {
         cacheLocation: "sessionStorage",

@@ -78,7 +78,7 @@ export function MyAssignedForms(){
                     headers: { 'Content-Type': 'text/html' },
                     body: JSON.stringify({ Email: String(User.email)})
                 };
-                fetch(('//127.0.0.1:5000/loadlecturerassignedform'), requestOptions)
+                fetch(('https://hons-peer-review-api.herokuapp.com/loadlecturerassignedform'), requestOptions)
                 .then((res) => {return res.json()
                 .then((data) => {
                     var MyAssessments = []

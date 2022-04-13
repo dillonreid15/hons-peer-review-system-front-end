@@ -89,7 +89,7 @@ export function ViewFormLec(){
                 headers: { 'Content-Type': 'text/html' },
                 body: JSON.stringify({ FormID: secureStorage.getItem('assignedid')})
             };
-            fetch(('//127.0.0.1:5000/exportgrades'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/exportgrades'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                 const students = data[0];
@@ -150,7 +150,7 @@ export function ViewFormLec(){
                 headers: { 'Content-Type': 'text/html' },
                 body: JSON.stringify({ FormID: secureStorage.getItem('assignedid')})
             };
-            fetch(('//127.0.0.1:5000/settocomplete'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/settocomplete'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                 backHandle();
@@ -174,7 +174,7 @@ export function ViewFormLec(){
                 headers: { 'Content-Type': 'text/html' },
                 body: JSON.stringify({ FormID: secureStorage.getItem('assignedid'), Email: User.email})
             };
-            fetch(('//127.0.0.1:5000/emailgrades'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/emailgrades'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                 Popup.alert('Results Successfully Emailed')
@@ -198,7 +198,7 @@ export function ViewFormLec(){
                 headers: { 'Content-Type': 'text/html' },
                 body: JSON.stringify({ FormID: secureStorage.getItem('assignedid'), Email: User.email})
             };
-            fetch(('//127.0.0.1:5000/emailreminder'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/emailreminder'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                 Popup.alert('Results Successfully Emailed')
@@ -241,7 +241,7 @@ export function ViewFormLec(){
                         headers: { 'Content-Type': 'text/html' },
                         body: JSON.stringify({ FormID: secureStorage.getItem('assignedid')})
                     };
-                    fetch(('//127.0.0.1:5000/loadteamsforassignment'), requestOptions)
+                    fetch(('https://hons-peer-review-api.herokuapp.com/loadteamsforassignment'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
                         var teams = []

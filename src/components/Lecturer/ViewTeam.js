@@ -170,7 +170,7 @@ export function ViewTeam(){
             headers: { 'Content-Type': 'text/html' },
             body: JSON.stringify({ Email: p.id, Mark: e.target.value, TeamID: secureStorage.getItem('teamid') })
         };
-        fetch(('//127.0.0.1:5000/updateindiv'), requestOptions)
+        fetch(('https://hons-peer-review-api.herokuapp.com/updateindiv'), requestOptions)
         .then((res) => {return res.json()
         .then((data) => {
             Popup.alert("Grade Updated");
@@ -229,7 +229,7 @@ export function ViewTeam(){
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ CatList: catlist, TeamID: secureStorage.getItem('teamid'), LecMark: appliedMark, LecGrade: appliedGrade})
         };
-        fetch(('//127.0.0.1:5000/updategrades'), requestOptions)
+        fetch(('https://hons-peer-review-api.herokuapp.com/updategrades'), requestOptions)
         .then((res) => {return res.json()
         .then((data) => {
             window.location.reload(false);
@@ -276,7 +276,7 @@ export function ViewTeam(){
                             headers: { 'Content-Type': 'text/html' },
                             body: JSON.stringify({ TeamID: secureStorage.getItem('teamid')})
                         };
-                        fetch(('//127.0.0.1:5000/getteamassignment'), requestOptions)
+                        fetch(('https://hons-peer-review-api.herokuapp.com/getteamassignment'), requestOptions)
                         .then((res) => {return res.json()
                         .then((data) => {
                             var myRows = []
