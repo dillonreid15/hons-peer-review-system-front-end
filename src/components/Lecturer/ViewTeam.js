@@ -260,7 +260,7 @@ export function ViewTeam(){
     ]
    
     useEffect(() =>{
-        if(User.IsUoD && User.isAuthenticated && (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")){
+        if(User.IsUoD && User.isAuthenticated  /*&& (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")*/){
             if(secureStorage.getItem('UserCheckComplete') === 'True'){
                 if(secureStorage.getItem('assignedid') === '' || secureStorage.getItem('assignedid') === null ){
                     window.location.replace('/redirect')

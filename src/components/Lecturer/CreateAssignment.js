@@ -158,7 +158,7 @@ export function CreateAssignment(){
     }
 
     useEffect(() =>{
-        if(User.IsUoD && User.isAuthenticated && (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")){
+        if(User.IsUoD && User.isAuthenticated /*&& (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk") */){
             if(secureStorage.getItem('UserCheckComplete') === 'True'){
                 //api call to get list of modules the user is assigned to 
                 const requestOptions = {

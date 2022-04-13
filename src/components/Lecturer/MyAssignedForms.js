@@ -71,7 +71,7 @@ export function MyAssignedForms(){
     ]
 
     useEffect(() =>{
-        if(User.IsUoD && User.isAuthenticated && (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")){
+        if(User.IsUoD && User.isAuthenticated /*&& (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")*/){
             if(secureStorage.getItem('UserCheckComplete') === 'True'){
                 const requestOptions = {
                     method: 'POST',

@@ -124,11 +124,11 @@ export function StudentHome(){
     }, []);
     if(User.isAuthenticated && User.IsUoD){
         // Usercheck();
-        if(!User.IsStudent)
-        {
-            window.location.replace("/lecturehome");
-        }
-        else{
+        // if(!User.IsStudent)
+        // {
+        //     window.location.replace("/lecturehome");
+        // }
+      //  else{
             return (
                 <>
                 <div className='signed-in-home-wrapper'>
@@ -167,7 +167,7 @@ export function StudentHome(){
                 </div>
                 </> 
                 );
-        }
+       // }
     }
     else{
         window.location.replace("/redirect");

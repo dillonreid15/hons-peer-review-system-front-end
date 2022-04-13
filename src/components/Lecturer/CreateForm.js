@@ -189,7 +189,7 @@ export function CreateForm(){
     }
 
     useEffect(() =>{
-        if(User.IsUoD && User.isAuthenticated && (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")){
+        if(User.IsUoD && User.isAuthenticated /*&& (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk") */){
             if(secureStorage.getItem('UserCheckComplete') === 'True'){
                 console.log(secureStorage.getItem('assignedid'));
                 if(secureStorage.getItem('assignedid') !== null){

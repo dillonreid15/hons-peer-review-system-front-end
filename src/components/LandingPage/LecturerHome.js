@@ -101,11 +101,11 @@ export function LecturerHome(){
 // eslint-disable-next-line
 }, []);
     if(User.isAuthenticated && User.IsUoD){
-        if(User.IsStudent && User.email !== "DJYReid@dundee.ac.uk")
-        {
-            window.location.replace("/studenthome");
-        }
-        else{
+        // if(User.IsStudent && User.email !== "DJYReid@dundee.ac.uk")
+        // {
+        //     window.location.replace("/studenthome");
+        // }
+       // else{
             return (
                 <>
                 <div className='signed-in-home-wrapper'>
@@ -122,7 +122,7 @@ export function LecturerHome(){
                     </div>
                 </>
                 );
-            }
+            //}
     }
     else{
         window.location.replace("redirect");
