@@ -70,6 +70,19 @@ export function LecturerHome(){
                 secureStorage.setItem('UserCheckComplete', 'True');
             });
             });
+            const requestOptionsCheck = {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/html' },
+                body: JSON.stringify({ Email: String(User.email) })
+            };
+            fetch(('https://hons-peer-review-api.herokuapp.com/checkforstudentdata'), requestOptionsCheck)
+            .then((res) => {return res.json()
+            .then((data) => {
+                console.log("User check complete");
+                
+                secureStorage.setItem('UserCheckComplete', 'True');
+            });
+            });
 
             /* Delete unfinished forms or assignments*/
             if(secureStorage.getItem('assessmentid') !== null || secureStorage.getItem('assignedid' ) !== null){
