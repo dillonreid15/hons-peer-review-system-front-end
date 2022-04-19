@@ -94,7 +94,7 @@ export function CreateForm(){
       };
 
     const addFormFields = () => {
-        setCatList([...catList, { Category: "", Weighting: "" }])
+        setCatList([...catList, { Category: "", Weighting: "", CategoryType: "TeamMarked"}])
     }
     const removeFormFields = (i) => {
         let newFormValues = [...catList];
@@ -122,9 +122,11 @@ export function CreateForm(){
         }
         if(isValidName){
             if(isValidType){
+                //Combine weightings into one variable 
                 var arrToInt = catListWeighting.map(function(x) {
                     return parseInt(x, 10);
                 });
+                //If weighting doesn't equal 100 alert user
                 var sum = arrToInt.reduce((partialSum, a) => partialSum + a, 0);
                 if(sum !== 100){
                     Popup.alert('Weighting must add up to 100');
@@ -150,6 +152,7 @@ export function CreateForm(){
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ Form: formString})
                         };
+                        //if no assignment has been created already 
                         if(secureStorage.getItem('assignedid') === null){
                             fetch(('https://hons-peer-review-api.herokuapp.com/uploadform'), requestOptions)
                             .then((res) => {return res.json()
@@ -162,6 +165,7 @@ export function CreateForm(){
                             }); 
                             });
                         }
+                        //if assignment has been created but not submitted update instead of adding new form to database
                         else{
                             fetch(('https://hons-peer-review-api.herokuapp.com/updateform'), requestOptions)
                             .then((res) => {return res.json()
@@ -199,7 +203,7 @@ export function CreateForm(){
                         headers: { 'Content-Type': 'text/html' },
                         body: JSON.stringify({ AssignedID : String(secureStorage.getItem('assignedid')) })
                     };
-                    fetch(('https://hons-peer-review-api.herokuapp.com/loadunsubmittedform'), requestOptions)
+                    fetch(('//127.0.0.1:5000/loadunsubmittedform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
                         const jsonObj = JSON.parse(data[0]['CreatedFormJSON']);
@@ -305,7 +309,7 @@ export function CreateForm(){
                                     >
                                         <FormControlLabel  value="TeamMarked" control={<Radio />} label="Team Marked" />
                                         <FormControlLabel value="LecturerMarkedTeam" control={<Radio />} label="Lecturer Marked - Team" />
-                                        <FormControlLabel value="LecturerMarkedIndividual" control={<Radio />} label="Lecturer Marked - Solo" />
+                                        <FormControlLabel value="LecturerMarkedIndividual" control={<Radio />} label="Lecturer Marked - Individual" />
                                     </RadioGroup>
                                 </FormControl>
                                 <div className="btn-remove-wrapper">

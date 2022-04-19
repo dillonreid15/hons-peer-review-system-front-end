@@ -40,6 +40,7 @@ export function Redirect(){
                 if(localStorage.getItem('UserCheckComplete') !== 'True'){
                     secureStorage.setItem('UserCheckComplete', 'False')
                 }
+                //Check if user has a @dundee.ac.uk email address
                 if(/@dundee.ac.uk\s*$/.test(User.email)){
                     if(User.name.includes("Student")){
                         window.location.replace("/studenthome")

@@ -65,7 +65,6 @@ export function ViewForm(){
         var catWeight = [];
         var suggestedMarks = [];
         for(let i=0; i<numCat; i++){
-
             newForm.push({ 
             Category: tempform['column-list'][i]['Category'], 
             Weighting: tempform['column-list'][i]['Weighting'],
@@ -76,7 +75,6 @@ export function ViewForm(){
                                  SuggestedMark: tempform['column-list'][i]['Weighting']})
 
         }
-        console.log("here", newForm)
         for(let i=0; i<newForm.length; i++){
             for(let y=0; y<numStudent; y++){
                 
@@ -93,7 +91,6 @@ export function ViewForm(){
         setNumStudents(numStudent);
         setCatWeighting(catWeight);
         setForm(newForm);
-        console.log(newForm)
     }
     const loadFormDefaults = (form, numCat, numStudent, myStudents) =>{
         var newForm = [];
@@ -103,12 +100,10 @@ export function ViewForm(){
             if(x['Email'] === User.email){
                 setSuggestedGrades(x['SuggestedGrades'])
                 for(const y of x['Form']){
-                    console.log(y)
                     catWeight.push({TotalPercentage: 100 })
                     suggestedMarks.push({Category: y['Category'], SuggestedMark: y['SuggestedMark']})
                     newForm.push(y)
                     for(const j of y['Student']){
-                        console.log(j)
                     }
                 }
             }
@@ -120,6 +115,9 @@ export function ViewForm(){
         setForm(newForm);
     }
 
+    /**When the suggested mark is updated for each category,
+     * Check if the value is a valid number, then store it in the local state with the categories name
+     *     **/
     const onChangeSuggestedMark = (iCat, e) =>{
         let isnum = /^\d+$/.test(e.target.value)
         if(isnum){
@@ -174,33 +172,38 @@ export function ViewForm(){
         setForm(newFormValues);
     }
 
+    //on form submit
     const handleSubmit = () =>{
         var efforts = true;
+        //If any categories efforts don't add up to 100% show an alert to the user
         for(var cat of form){   
             var total = 0;  
             for(var student of cat['Student']){
                 total += student['SuggestedMark'];
             }
-            console.log(total);
             if(total !== 100){
                 efforts = false;
             }
         }
         if(efforts){
             var formToSendWOutName = []
+            //load form and add suggested marks for each categories
             for(var i = 0; i<form.length; i++){
                 var toAdd = form[i];
                 toAdd.SuggestedMark = suggestedMark[i]['SuggestedMark'];
                 formToSendWOutName.push(toAdd);
             }
             var email = User.email
+            //take form to submit and assign the signed-in users email address to it.
             var formToSendWithName = [{Email: email, Form: formToSendWOutName, SuggestedGrades: suggestedGrades}]
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ FormCat: formToSendWithName, ReviewID: review[0]['ReviewID']})
             };
-            fetch(('https://hons-peer-review-api.herokuapp.com/studentupdateform'), requestOptions)
+            //As a review form entry is created on team assignment, we simply update the SubmittedForm column in the database,
+            //so the following api call is made for both new forms and updating forms
+            fetch(('//127.0.0.1:5000/studentupdateform'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                secureStorage.removeItem('formid');
@@ -214,6 +217,7 @@ export function ViewForm(){
         }          
     }   
  
+    //slider values
     const effortsMark = [
         {
             value: 0,
@@ -238,7 +242,10 @@ export function ViewForm(){
     ]
 
     const User = UserData();
+
+
     useEffect(() => {
+        //Commented out section is for testing purposes, allows users to access both sides of the system
         if(User.IsUoD && User.isAuthenticated /*&& (!User.IsStudent || User.email==="DJYReid@dundee.ac.uk")*/){
             if(secureStorage.getItem('UserCheckComplete') === 'True'){
                 if(secureStorage.getItem('formid') !== ''){
@@ -250,16 +257,23 @@ export function ViewForm(){
                     var reviewdata = [];
                     var templatedata = [];
                     var teamsdata = [];
-                    fetch(('https://hons-peer-review-api.herokuapp.com/loadform'), requestOptions)
+                    //get all data for review form
+                    fetch(('//127.0.0.1:5000/loadform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
+                        //review data is data stored on the teams review form
                         reviewdata = data[0];
+                        //templatedata will store the template for the peer review form as submitted on creation by the lecturer
+                        //includes categories and weighting
                         templatedata = data[1];
+                        //stores data on the team the assessment was assigned to
                         teamsdata = data[2];
                         var formtemp = JSON.parse(templatedata[0]['CreatedFormJSON']);
                         var catlist = []
                         var noOfCat=0;
                         var additionalCat = 0;
+                        //get list of categories from the form template
+
                             for(const x of formtemp['column-list']){
                                 if(x['CategoryType'] === "TeamMarked"){
                                     catlist.push(x)
@@ -269,19 +283,20 @@ export function ViewForm(){
                                     additionalCat = additionalCat + x['Weighting']
                                 }
                             }        
-                        console.log(reviewdata)
                         setAdditionalCatWeights(additionalCat);
                         setCatList(catlist);
                         var noOfStudent=0;
                         for(var i = 0; i<teamsdata.length; i++){
                             noOfStudent++
                         }
+                        //if there was no previously submitted form set empty form
                         if(reviewdata[0]['SubmittedFormJSON'] === null || reviewdata[0]['SubmittedFormJSON'].length === 0){
                             const noToRound = (100 / noOfStudent)
                             var noToPas = Math.round(noToRound * 10) / 10;
                             setDefaultSlideVal(noToPas);
                             setFormDefaults(noOfCat, noOfStudent, teamsdata, formtemp);
                         }
+                        // if there was a previously submitted form load form values
                         else if(reviewdata[0]['SubmittedFormJSON'] !== null){
                             loadFormDefaults(reviewdata[0]['SubmittedFormJSON'], noOfCat, noOfStudent, teamsdata)
                         }
