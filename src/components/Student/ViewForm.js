@@ -203,7 +203,7 @@ export function ViewForm(){
             };
             //As a review form entry is created on team assignment, we simply update the SubmittedForm column in the database,
             //so the following api call is made for both new forms and updating forms
-            fetch(('//127.0.0.1:5000/studentupdateform'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/studentupdateform'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                secureStorage.removeItem('formid');
@@ -258,7 +258,7 @@ export function ViewForm(){
                     var templatedata = [];
                     var teamsdata = [];
                     //get all data for review form
-                    fetch(('//127.0.0.1:5000/loadform'), requestOptions)
+                    fetch(('https://hons-peer-review-api.herokuapp.com/loadform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
                         //review data is data stored on the teams review form

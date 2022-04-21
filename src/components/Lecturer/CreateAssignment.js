@@ -109,7 +109,7 @@ export function CreateAssignment(){
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ Form: formString})
             };
-            fetch(('//127.0.0.1:5000/createassignment'), requestOptions)
+            fetch(('https://hons-peer-review-api.herokuapp.com/createassignment'), requestOptions)
             .then((res) => {return res.json()
             .then((data) => {
                 console.log("File Uploaded");     
@@ -136,7 +136,7 @@ export function CreateAssignment(){
             headers: { 'Content-Type': 'text/html' },
             body: JSON.stringify({ModuleID : String(value), Email: User.email})
         };
-        fetch(('//127.0.0.1:5000/getlecturersformodule'), requestOptions)
+        fetch(('https://hons-peer-review-api.herokuapp.com/getlecturersformodule'), requestOptions)
         .then((res) => {return res.json()
         .then((data) => {
             var MyLecturers = []
@@ -166,7 +166,7 @@ export function CreateAssignment(){
                     headers: { 'Content-Type': 'text/html' },
                     body: JSON.stringify({ Email: String(User.email)})
                 };
-                fetch(('//127.0.0.1:5000/getmymodules'), requestOptions)
+                fetch(('https://hons-peer-review-api.herokuapp.com/getmymodules'), requestOptions)
                 .then((res) => {return res.json()
                 .then((data) => {
                     var MyModules = []

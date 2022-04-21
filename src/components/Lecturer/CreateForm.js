@@ -203,7 +203,7 @@ export function CreateForm(){
                         headers: { 'Content-Type': 'text/html' },
                         body: JSON.stringify({ AssignedID : String(secureStorage.getItem('assignedid')) })
                     };
-                    fetch(('//127.0.0.1:5000/loadunsubmittedform'), requestOptions)
+                    fetch(('https://hons-peer-review-api.herokuapp.com/loadunsubmittedform'), requestOptions)
                     .then((res) => {return res.json()
                     .then((data) => {
                         const jsonObj = JSON.parse(data[0]['CreatedFormJSON']);
